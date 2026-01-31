@@ -1,153 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Quero Burguer – Cardápio</title>
-
-<style>
-:root{
-  --bg:#0f0f10;--card:#16171a;--muted:#a9abb3;--text:#fff;
-  --primary:#ffb000;--primary-contrast:#222;--danger:#ff4d4f;--ok:#22c55e;
-  --radius:16px;--shadow:0 10px 30px rgba(0,0,0,.35);
-}
-*{box-sizing:border-box}
-body{
-  margin:0;font-family:system-ui,Arial;
-  background:linear-gradient(180deg,#0c0c0d,#121316 40%,#0c0c0d);
-  color:var(--text);
-}
-header{
-  position:sticky;top:0;z-index:5;
-  background:rgba(18,19,22,.85);
-  backdrop-filter:blur(6px);
-  border-bottom:1px solid #1f2024;
-}
-.topbar{
-  max-width:1100px;margin:auto;padding:14px 16px;
-  display:flex;gap:12px;align-items:center
-}
-.logo{
-  width:42px;height:42px;border-radius:12px;
-  background:linear-gradient(145deg,#ffcc4d,#ff9800);
-  display:grid;place-items:center;
-}
-.logo b{color:#1e1f23}
-.brand h1{margin:0;font-size:18px}
-.brand p{margin:2px 0 0;font-size:12px;color:var(--muted)}
-.nav{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
-.chip{
-  padding:8px 12px;border-radius:999px;
-  background:#1b1d21;color:#d9dbe1;
-  border:1px solid #262830;cursor:pointer;font-size:13px
-}
-.chip.active,.chip:hover{
-  background:var(--primary);color:var(--primary-contrast);border-color:transparent
-}
-
-.wrap{
-  max-width:1100px;margin:18px auto;padding:0 16px;
-  display:grid;grid-template-columns:1fr 360px;gap:18px
-}
-@media(max-width:960px){.wrap{grid-template-columns:1fr}}
-
-.grid{
-  display:grid;gap:14px;
-  grid-template-columns:repeat(auto-fill,minmax(220px,1fr))
-}
-
-/* ===== MOBILE: 2 COLUNAS ===== */
-@media(max-width:600px){
-  .grid{grid-template-columns:repeat(2,1fr)}
-}
-
-.card{
-  background:var(--card);border:1px solid #1f2024;
-  border-radius:var(--radius);box-shadow:var(--shadow);
-  overflow:hidden;display:flex;flex-direction:column
-}
-
-/* FOTO QUADRADA */
-.thumb{
-  aspect-ratio:1/1;
-  width:100%;object-fit:cover;background:#000
-}
-
-.pad{padding:10px}
-.title{margin:0 0 4px;font-size:15px;font-weight:700}
-.desc{margin:0 0 6px;font-size:13px;color:var(--muted)}
-.priceRow{display:flex;justify-content:space-between;align-items:center}
-.price{font-weight:800}
-.qty{display:flex;gap:6px;align-items:center}
-.qty button{
-  width:26px;height:26px;border:0;border-radius:50%;
-  background:#2a2b31;color:#fff;font-size:16px
-}
-.qty input{
-  width:32px;text-align:center;border:0;background:transparent;color:#fff
-}
-.addBtn{
-  margin-top:6px;padding:8px;border-radius:10px;
-  border:0;background:var(--primary);
-  color:var(--primary-contrast);font-weight:800
-}
-
-/* ===== CARRINHO ===== */
-.cart{
-  background:#14151a;border:1px solid #1f2024;
-  border-radius:var(--radius);box-shadow:var(--shadow);
-}
-.cartHeader{
-  padding:14px;display:flex;justify-content:space-between;align-items:center
-}
-.cart .items{
-  padding:8px 14px;display:flex;flex-direction:column;gap:10px
-}
-.line{
-  background:#101115;border:1px solid #1d1f25;
-  border-radius:12px;padding:8px;
-  display:grid;grid-template-columns:1fr auto auto;gap:6px
-}
-.note{padding:0 14px;display:grid;gap:8px}
-.note input,.note textarea,.note select{
-  width:100%;padding:8px;border-radius:10px;
-  background:#0f1013;border:1px solid #2a2b31;color:#fff
-}
-.totals{padding:10px 14px;border-top:1px dashed #2a2b31}
-.actions{padding:14px;display:grid;gap:8px}
-.btn{
-  padding:12px;border-radius:12px;border:0;font-weight:800
-}
-.btn.whatsapp{background:var(--ok)}
-.btn.clear{background:var(--danger)}
-
-/* ===== MOBILE CARRINHO ESCONDIDO ===== */
-@media(max-width:960px){
-  main.wrap{padding-bottom:120px}
-  .cart{
-    position:fixed;left:0;right:0;bottom:0;
-    transform:translateY(110%);
-    transition:.25s;border-radius:18px 18px 0 0;
-    max-height:85vh;z-index:30;pointer-events:none
-  }
-  .cart.open{transform:translateY(0);pointer-events:auto}
-}
-
-/* ===== BOTÃO FLUTUANTE ===== */
-.fab{
-  position:fixed;right:16px;bottom:16px;
-  width:56px;height:56px;border-radius:18px;
-  background:#14151a;border:1px solid #2a2b31;
-  display:none;place-items:center;z-index:40
-}
-@media(max-width:960px){.fab{display:grid}}
-.badge{
-  position:absolute;top:-6px;right:-6px;
-  background:red;color:#fff;font-size:12px;
-  min-width:20px;height:20px;border-radius:999px;
-  display:grid;place-items:center;font-weight:900
-}
-</style>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Quero Burguer – Cardápio</title>
@@ -168,39 +21,64 @@ header{
     }
 
     header{
-      position:sticky;top:0;z-index:5;
+      position:sticky;top:0;z-index:10;
       backdrop-filter:blur(6px);
       background:rgba(18,19,22,.85);
       border-bottom:1px solid #1f2024;
     }
     .topbar{
-      max-width:1100px;margin:0 auto;padding:14px 16px;
+      max-width:1100px;margin:0 auto;padding:12px 14px;
       display:flex;gap:12px;align-items:center
     }
-    .logo{
-      width:42px;height:42px;border-radius:12px;
-      background:linear-gradient(145deg,#ffcc4d,#ff9800);
-      display:grid;place-items:center;
-      box-shadow:var(--shadow)
-    }
-    .logo b{color:#1e1f23}
-    .brand h1{font-size:18px;margin:0}
-    .brand p{margin:2px 0 0;color:var(--muted);font-size:12px}
 
-    .nav{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
+    /* LOGO imagem */
+    .logoBox{
+      width:44px;height:44px;border-radius:14px;
+      background:#101115;border:1px solid #1f2024;
+      display:grid;place-items:center;overflow:hidden;
+      box-shadow:var(--shadow);
+      flex: 0 0 auto;
+    }
+    .logoBox img{
+      width:100%;height:100%;object-fit:cover;display:block;
+    }
+
+    .brand{min-width:0}
+    .brand h1{font-size:18px;margin:0;line-height:1.1}
+    .brand p{margin:3px 0 0;color:var(--muted);font-size:12px}
+
+    /* Categorias */
+    .nav{
+      margin-left:auto;
+      display:flex;gap:8px;flex-wrap:wrap;
+      max-width:520px;
+      justify-content:flex-end;
+    }
     .chip{
       padding:8px 12px;border-radius:999px;
       background:#1b1d21;color:#d9dbe1;border:1px solid #262830;
-      cursor:pointer;font-size:13px;transition:.2s;
-      user-select:none;
+      cursor:pointer;font-size:13px;transition:.2s;user-select:none;
+      white-space:nowrap;
     }
     .chip.active,.chip:hover{
       background:var(--primary);color:var(--primary-contrast);border-color:transparent
     }
 
+    /* No celular: categorias com rolagem horizontal bonita */
+    @media (max-width: 720px){
+      .nav{
+        max-width:none;
+        flex-wrap:nowrap;
+        overflow:auto;
+        -webkit-overflow-scrolling:touch;
+        scrollbar-width:none;
+      }
+      .nav::-webkit-scrollbar{display:none}
+    }
+
     .wrap{
-      max-width:1100px;margin:18px auto;padding:0 16px;
-      display:grid;grid-template-columns:1fr 360px;gap:18px
+      max-width:1100px;margin:16px auto;padding:0 14px;
+      display:grid;grid-template-columns:1fr 360px;gap:16px
     }
     @media (max-width: 960px){ .wrap{grid-template-columns:1fr} }
 
@@ -208,8 +86,7 @@ header{
       display:grid;gap:12px;
       grid-template-columns:repeat(auto-fill,minmax(220px,1fr))
     }
-
-    /* ===== MOBILE: 2 COLUNAS ===== */
+    /* 2 colunas no celular */
     @media (max-width: 600px){
       .grid{ grid-template-columns:repeat(2, minmax(0,1fr)); }
     }
@@ -221,21 +98,20 @@ header{
       box-shadow:var(--shadow);
       overflow:hidden;
       display:flex;flex-direction:column;
-      transition:transform .2s
+      transition:transform .15s ease;
     }
-    .card:hover{transform:translateY(-2px)}
+    .card:hover{transform:translateY(-1px)}
 
-    /* Foto menor e boa pra 2 colunas: quadrada */
     .thumb{
-      aspect-ratio:1/1;
+      aspect-ratio:1/1; /* bom pra 2 colunas */
       width:100%;
       object-fit:cover;
       background:#0c0c0d;
     }
 
     .pad{padding:10px}
-    .title{font-weight:800;margin:0 0 4px;font-size:14px}
-    .desc{color:var(--muted);font-size:12px;line-height:1.25;margin:0 0 8px}
+    .title{font-weight:900;margin:0 0 4px;font-size:14px}
+    .desc{color:var(--muted);font-size:12px;line-height:1.25;margin:0 0 8px;min-height:30px}
 
     .priceRow{display:flex;align-items:center;justify-content:space-between;gap:8px}
     .price{font-weight:900;font-size:14px}
@@ -254,12 +130,12 @@ header{
 
     .addBtn{
       margin-top:8px;width:100%;
-      padding:10px 10px;border-radius:12px;border:0;cursor:pointer;
+      padding:10px;border-radius:12px;border:0;cursor:pointer;
       background:var(--primary);color:var(--primary-contrast);
       font-weight:900;
     }
 
-    /* ===== Carrinho (desktop) ===== */
+    /* Carrinho (desktop) */
     .cart{
       position:sticky;top:76px;align-self:start;
       background:#14151a;border:1px solid #1f2024;
@@ -280,9 +156,9 @@ header{
       background:#101115;border:1px solid #1d1f25;border-radius:12px;
       padding:10px;display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:center
     }
-    .line .name{font-weight:800;font-size:13px}
+    .line .name{font-weight:900;font-size:13px}
     .line .unit{color:var(--muted);font-size:12px}
-    .line .subtotal{font-weight:800;font-size:13px}
+    .line .subtotal{font-weight:900;font-size:13px}
 
     .note{margin:8px 14px 0;display:grid;gap:8px}
     .note textarea,.note input,.note select{
@@ -290,20 +166,23 @@ header{
       color:#fff;padding:10px;font-size:14px
     }
     .note textarea{min-height:64px;resize:vertical}
+
     .totals{
       border-top:1px dashed #2a2b31;
       margin:10px 14px 0;padding:10px 0;display:grid;gap:6px
     }
     .row{display:flex;justify-content:space-between;align-items:center}
+
     .actions{display:grid;gap:10px;padding:14px}
     .btn{
-      padding:12px;border-radius:12px;border:0;cursor:pointer;font-weight:900;letter-spacing:.3px
+      padding:12px;border-radius:12px;border:0;cursor:pointer;
+      font-weight:900;letter-spacing:.3px
     }
     .btn.whatsapp{background:var(--ok);color:#08150c}
     .btn.clear{background:var(--danger);color:#1e0f10}
     .btn:disabled{opacity:.55;cursor:not-allowed}
 
-    /* ===== Mobile: carrinho escondido de verdade ===== */
+    /* Mobile: carrinho totalmente escondido quando fechado */
     @media (max-width: 960px){
       main.wrap{ padding-bottom: 120px; }
 
@@ -311,25 +190,20 @@ header{
         position:fixed;left:0;right:0;bottom:0;top:auto;
         border-radius:18px 18px 0 0;
         max-height:85vh;
-        transform:translateY(110%); /* some COMPLETAMENTE */
+        transform:translateY(110%);
         transition:transform .22s ease;
         z-index:30;
         pointer-events:none;
       }
-      .cart.open{
-        transform:translateY(0);
-        pointer-events:auto;
-      }
+      .cart.open{ transform:translateY(0); pointer-events:auto; }
       .cart .items{ max-height:30vh; }
-
-      /* botão fechar só no mobile */
       #toggleCartBtn{ display:inline-flex; }
     }
     @media (min-width: 961px){
       #toggleCartBtn{ display:none; }
     }
 
-    /* ===== Botão flutuante (mobile) ===== */
+    /* Botão flutuante (mobile) */
     .fabCart{
       position:fixed;right:16px;bottom:16px;
       width:58px;height:58px;border-radius:18px;
@@ -339,19 +213,15 @@ header{
       cursor:pointer;z-index:40;
     }
     .fabCart svg{ width:26px;height:26px; }
-    @media (max-width: 960px){
-      .fabCart{ display:grid; }
-    }
+    @media (max-width: 960px){ .fabCart{ display:grid; } }
+
     .badge{
       position:absolute;top:-8px;right:-8px;
       min-width:22px;height:22px;padding:0 6px;border-radius:999px;
       background:var(--danger);color:#fff;font-size:12px;font-weight:900;
-      display:grid;place-items:center;
-      border:2px solid #0f0f10;
-      line-height:1;
+      display:grid;place-items:center;border:2px solid #0f0f10;line-height:1;
     }
 
-    /* Overlay para fechar tocando fora */
     .overlay{
       position:fixed;inset:0;background:rgba(0,0,0,.55);
       z-index:25;display:none;
@@ -361,79 +231,20 @@ header{
 </head>
 
 <body>
-
-<header>
-  <div class="topbar">
-    <div class="logo"><b>QB</b></div>
-    <div class="brand">
-      <h1>Quero Burguer</h1>
-      <p>Peça pelo WhatsApp</p>
   <header>
     <div class="topbar">
-      <div class="logo"><b>QB</b></div>
+      <div class="logoBox">
+        <!-- coloque sua logo em images/logo.png -->
+        <img src="images/logo.png" alt="Quero Burguer" onerror="this.style.display='none'; this.parentElement.innerHTML='<b style=&quot;color:#ffb000&quot;>QB</b>';">
+      </div>
+
       <div class="brand">
         <h1>Quero Burguer</h1>
         <p>Cardápio digital com pedido via WhatsApp</p>
       </div>
+
       <nav class="nav" id="categoryChips"></nav>
     </div>
-    <nav class="nav" id="categoryChips"></nav>
-  </div>
-</header>
-
-<main class="wrap">
-<section><div class="grid" id="productGrid"></div></section>
-
-<aside class="cart" id="cart">
-  <div class="cartHeader">
-    <h3>Carrinho</h3>
-    <button class="chip" onclick="toggleCart()">Fechar</button>
-  </div>
-  <div class="items" id="cartItems"></div>
-  <div class="note">
-    <input id="name" placeholder="Nome">
-    <input id="phone" placeholder="Celular">
-    <input id="address" placeholder="Endereço">
-    <select id="pay">
-      <option>Dinheiro</option><option>Pix</option>
-      <option>Cartão crédito</option><option>Cartão débito</option>
-    </select>
-    <textarea id="obs" placeholder="Observação"></textarea>
-  </div>
-  <div class="totals"><strong id="total">R$ 0,00</strong></div>
-  <div class="actions">
-    <button class="btn whatsapp" onclick="send()">Enviar WhatsApp</button>
-    <button class="btn clear" onclick="clearCart()">Limpar</button>
-  </div>
-</aside>
-</main>
-
-<button class="fab" onclick="toggleCart()">
-  🛒
-  <span class="badge" id="badge" style="display:none">0</span>
-</button>
-
-<script>
-const WHATSAPP_PHONE='5521992497289';
-const PRODUCTS=[
-{id:'x1',name:'Quero Smash',price:11.9,category:'Lanches',desc:'Smash 140g',image:'images/smash.jpg'},
-{id:'x2',name:'Quero Bacon',price:18.9,category:'Lanches',desc:'Com bacon',image:'images/bacon.jpg'}
-];
-let cart=[];
-const brl=v=>v.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
-const isMobile=()=>window.innerWidth<=960;
-
-function render(){
-  const g=document.getElementById('productGrid');g.innerHTML='';
-  PRODUCTS.forEach(p=>{
-    const d=document.createElement('div');d.className='card';
-    d.innerHTML=`
-      <img class="thumb" src="${p.image}">
-      <div class="pad">
-        <h4 class="title">${p.name}</h4>
-        <p class="desc">${p.desc}</p>
-        <div class="priceRow">
-          <span class="price">${brl(p.price)}</span>
   </header>
 
   <div class="overlay" id="overlay"></div>
@@ -467,13 +278,13 @@ function render(){
       </div>
 
       <div class="actions">
+        <!-- BLOQUEIO já no HTML -->
         <button class="btn whatsapp" id="sendBtn" disabled>Enviar WhatsApp</button>
         <button class="btn clear" id="clearBtn" disabled>Limpar carrinho</button>
       </div>
     </aside>
   </main>
 
-  <!-- Botão flutuante (mobile) -->
   <button class="fabCart" id="fabCart" type="button" aria-label="Abrir carrinho">
     <span class="badge" id="cartBadge" style="display:none;">0</span>
     <svg viewBox="0 0 24 24" fill="none">
@@ -486,9 +297,9 @@ function render(){
 
   <script>
     // ========= CONFIG =========
-    const WHATSAPP_PHONE = '5521992497289'; // <-- seu número (55 + DDD + número)
+    const WHATSAPP_PHONE = '5521992497289'; // 55 + DDD + número (só dígitos)
 
-    // ========= PRODUTOS =========
+    // ========= PRODUTOS (um só para PC e celular) =========
     const PRODUCTS = [
       { id:'xsmash', name:'Quero Smash 140g', price:11.90, category:'Lanches', desc:'Pão brioche, 140g smash, queijo prato e maionese da casa.', image:'images/smash.jpg' },
       { id:'xbacon', name:'Quero Bacon', price:18.90, category:'Lanches', desc:'Carne 160g, bacon crocante, cheddar e molho especial.', image:'images/bacon.jpg' },
@@ -505,6 +316,15 @@ function render(){
     const unique = (arr) => [...new Set(arr)];
     const normalizeDigits = (s) => String(s||'').replace(/\D+/g,'');
     const isMobile = () => window.matchMedia('(max-width: 960px)').matches;
+
+    // ========= ELEMENTOS =========
+    const cartBox = document.getElementById('cartBox');
+    const overlay = document.getElementById('overlay');
+    const fabCart = document.getElementById('fabCart');
+    const toggleCartBtn = document.getElementById('toggleCartBtn');
+    const sendBtn = document.getElementById('sendBtn');
+    const clearBtn = document.getElementById('clearBtn');
+    const cartBadge = document.getElementById('cartBadge');
 
     // ========= CATEGORIAS =========
     function renderCategories(){
@@ -539,38 +359,6 @@ function render(){
           </div>
           <button class="addBtn">Adicionar</button>
         </div>
-      </div>`;
-    d.querySelector('.addBtn').onclick=()=>add(p);
-    g.appendChild(d);
-  });
-}
-function add(p){
-  const f=cart.find(i=>i.id===p.id);
-  if(f)f.q++;else cart.push({...p,q:1});
-  update();
-  if(isMobile())openCart();
-}
-function update(){
-  const b=document.getElementById('cartItems');b.innerHTML='';
-  let t=0,q=0;
-  cart.forEach(i=>{
-    t+=i.price*i.q;q+=i.q;
-    b.innerHTML+=`<div class="line"><div>${i.q}x ${i.name}</div><div>${brl(i.price*i.q)}</div></div>`;
-  });
-  document.getElementById('total').innerText=brl(t);
-  const badge=document.getElementById('badge');
-  badge.style.display=q?'grid':'none';badge.innerText=q;
-}
-function openCart(){document.getElementById('cart').classList.add('open')}
-function toggleCart(){document.getElementById('cart').classList.toggle('open')}
-function clearCart(){cart=[];update();toggleCart()}
-function send(){
-  let txt='Pedido:%0A';
-  cart.forEach(i=>txt+=`${i.q}x ${i.name}%0A`);
-  window.open(`https://wa.me/${WHATSAPP_PHONE}?text=${txt}`);
-}
-render();
-</script>
       `;
       const [minus, input, plus] = wrap.querySelectorAll('.qty>*');
       minus.onclick = ()=>{ input.value = Math.max(1, (parseInt(input.value)||1) - 1); };
@@ -592,7 +380,7 @@ render();
       if(f){ f.qty += qty; }
       else{ state.cart.push({id:product.id, name:product.name, price:product.price, qty}); }
       renderCart();
-      if(isMobile()) setCartOpen(true); // abre ao adicionar item
+      if(isMobile()) setCartOpen(true);
     }
 
     function removeFromCart(id){
@@ -634,13 +422,12 @@ render();
     }
 
     function updateBadge(){
-      const badge = document.getElementById('cartBadge');
       const qty = state.cart.reduce((s,i)=>s+i.qty,0);
       if(qty>0){
-        badge.style.display = 'grid';
-        badge.textContent = String(qty);
+        cartBadge.style.display = 'grid';
+        cartBadge.textContent = String(qty);
       }else{
-        badge.style.display = 'none';
+        cartBadge.style.display = 'none';
       }
     }
 
@@ -649,33 +436,27 @@ render();
       box.innerHTML = '';
       state.cart.forEach(i=>box.appendChild(cartLine(i)));
 
-      const total = calcTotal();
-      document.getElementById('total').textContent = formatBRL(total);
+      document.getElementById('total').textContent = formatBRL(calcTotal());
 
       const has = state.cart.length > 0;
-      document.getElementById('sendBtn').disabled = !has;   // ✅ bloqueia sem itens
-      document.getElementById('clearBtn').disabled = !has;
+
+      // BLOQUEIO (vale para PC e celular)
+      sendBtn.disabled = !has;
+      clearBtn.disabled = !has;
 
       updateBadge();
     }
 
-    // ========= ABRIR / FECHAR CARRINHO (mobile) =========
-    const cartBox = document.getElementById('cartBox');
-    const overlay = document.getElementById('overlay');
-    const fabCart = document.getElementById('fabCart');
-    const toggleCartBtn = document.getElementById('toggleCartBtn');
-
+    // ========= ABRIR / FECHAR (mobile) =========
     function setCartOpen(open){
       cartBox.classList.toggle('open', open);
       overlay.classList.toggle('show', open && isMobile());
     }
 
-    // Só abre por botão flutuante
     fabCart.addEventListener('click', ()=> setCartOpen(true));
     toggleCartBtn.addEventListener('click', ()=> setCartOpen(false));
     overlay.addEventListener('click', ()=> setCartOpen(false));
 
-    // Desktop sempre aberto; Mobile sempre fechado no início
     function applyLayout(){
       if(isMobile()){
         setCartOpen(false);
@@ -711,22 +492,18 @@ render();
       return encodeURIComponent(lines.join('\n'));
     }
 
-    function openWhatsApp(text){
+    function send(){
+      // BLOQUEIO FINAL (mesmo se o botão “bugasse”)
+      if(state.cart.length === 0){
+        alert('Adicione pelo menos 1 item no carrinho.');
+        return;
+      }
       const phone = normalizeDigits(WHATSAPP_PHONE);
       if(!phone || phone.length < 10){
         alert('Número do WhatsApp inválido.');
         return;
       }
-      window.open(`https://wa.me/${phone}?text=${text}`,'_blank');
-    }
-
-    function send(){
-      // ✅ segurança extra: impede enviar vazio mesmo se mexerem no HTML
-      if(state.cart.length === 0){
-        alert('Adicione pelo menos 1 item no carrinho.');
-        return;
-      }
-      openWhatsApp(buildWhatsAppText());
+      window.open(`https://wa.me/${phone}?text=${buildWhatsAppText()}`,'_blank');
     }
 
     function clearCart(){
@@ -735,14 +512,18 @@ render();
       if(isMobile()) setCartOpen(false);
     }
 
-    document.getElementById('sendBtn').addEventListener('click', send);
-    document.getElementById('clearBtn').addEventListener('click', clearCart);
+    sendBtn.addEventListener('click', send);
+    clearBtn.addEventListener('click', clearCart);
 
     // ========= INIT =========
     renderCategories();
     renderProducts();
     renderCart();
     applyLayout();
+
+    // segurança extra: garante bloqueio inicial mesmo com cache estranho
+    sendBtn.disabled = true;
+    clearBtn.disabled = true;
   </script>
 </body>
 </html>

@@ -49,37 +49,51 @@
 
     /* Categorias */
     .nav{
-      margin-left:auto;
-      display:flex;gap:8px;flex-wrap:wrap;
+      margin-left:0;                 /* mobile: começa da esquerda */
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
       max-width:520px;
-      justify-content:flex-end;
+      justify-content:flex-start;
     }
     .chip{
-  padding:8px 12px;border-radius:999px;
-  background:rgba(255,255,255,.04);
-  color:#e9e9ee;
-  border:1px solid rgba(255,255,255,.08);
-  cursor:pointer;font-size:13px;transition:.2s;user-select:none;
-  white-space:nowrap;
-  }
-  .chip.active,.chip:hover{
-  background:var(--primary);
-  color:var(--primary-contrast);
-  border-color:transparent;
-  box-shadow: 0 10px 22px rgba(255,176,0,.18);
-}
+      padding:8px 12px;border-radius:999px;
+      background:#1b1d21;color:#d9dbe1;border:1px solid #262830;
+      cursor:pointer;font-size:13px;transition:.2s;user-select:none;
+      white-space:nowrap;
+    }
+    .chip.active,.chip:hover{
+      background:var(--primary);color:var(--primary-contrast);border-color:transparent
+    }
 
+    /* Desktop: volta a alinhar na direita (como antes) */
+    @media (min-width: 721px){
+      .nav{
+        margin-left:auto;
+        justify-content:flex-end;
+      }
+    }
 
-    /* No celular: categorias com rolagem horizontal bonita */
-    @media (max-width: 720px){
+    /* No mobile (até 960px): rolagem horizontal */
+    @media (max-width: 960px){
       .nav{
         max-width:none;
         flex-wrap:nowrap;
-        overflow:auto;
+        overflow-x:auto;
+        overflow-y:hidden;
         -webkit-overflow-scrolling:touch;
         scrollbar-width:none;
+        justify-content:flex-start;
+        padding: 6px 2px 10px;
+        gap:10px;
       }
       .nav::-webkit-scrollbar{display:none}
+
+      /* efeito “fade” nas laterais pra indicar rolagem */
+      .nav{
+        mask-image: linear-gradient(to right, transparent 0, black 18px, black calc(100% - 18px), transparent 100%);
+        -webkit-mask-image: linear-gradient(to right, transparent 0, black 18px, black calc(100% - 18px), transparent 100%);
+      }
     }
 
     .wrap{
@@ -306,21 +320,17 @@
     // ========= CONFIG =========
     const WHATSAPP_PHONE = '5521992497289'; // 55 + DDD + número (só dígitos)
 
-    // >>>>>>>> ADICIONADO: URL do servidor (Cloudflare Quick Tunnel)
-    // Troque quando o link mudar
+    // URL FIXA DO SEU QUICK TUNNEL (troque quando mudar)
     const SERVER_URL = 'https://leon-doctrine-functional-canberra.trycloudflare.com';
 
     // ========= PRODUTOS (um só para PC e celular) =========
     const PRODUCTS = [
       { id:'xsmash', name:'Quero Smash 140g', price:11.90, category:'Lanches', desc:'Pão brioche, 140g smash, queijo prato e maionese da casa.', image:'images/smash.jpg' },
       { id:'xbacon', name:'Quero Bacon', price:18.90, category:'Lanches', desc:'Carne 160g, bacon crocante, cheddar e molho especial.', image:'images/bacon.jpg' },
-      { id:'combofamilia2', name:'Combo Família 2', price:70.90, category:'Combos', desc:'4 lanches + batata grande turbinada + refri 2l.', image:'images/combof2.jpeg' },
-      { id:'combofamilia1', name:'Combo Família 1', price:59.90, category:'Combos', desc:'2 lanches + 2 batatas + 2 bebidas.', image:'images/combof1.jpeg' },
-      { id:'batatam', name:'Batata Frita Média', price:18.90, category:'Acompanhamentos', desc:'Batata Crocante.', image:'images/batatam.jpeg' },
-      { id:'batatag', name:'Batata Frita Grande', price:24.90, category:'Acompanhamentos', desc:'Batata Crocante.', image:'images/batatag.jpeg' },
+      { id:'combo1', name:'Combo Individual', price:29.90, category:'Combos', desc:'1 lanche + batata + refri.', image:'images/combo1.jpg' },
+      { id:'comboFamilia', name:'Combo Família 2', price:59.90, category:'Combos', desc:'2 lanches + 2 batatas + 2 bebidas.', image:'images/combo_familia.jpg' },
+      { id:'batata', name:'Batata Crinkle M', price:9.90, category:'Acompanhamentos', desc:'Batata crocante.', image:'images/batata.jpg' },
       { id:'guaramor', name:'Guaramor 250ml', price:4.90, category:'Bebidas', desc:'Guaraná 250ml.', image:'images/guaramor.jpg' },
-      { id:'batatamtb', name:'Batata Turbinada Média', price:23.90, category:'Acompanhamentos', desc:'Inventar algo depois.', image:'images/batatag1.jpeg' },
-      { id:'batatagtb', name:'Batata Turbinada Grande', price:27.90, category:'Acompanhamentos', desc:'Inventar algo depois.', image:'images/batatag2.jpeg' },
     ];
 
     // ========= ESTADO =========
@@ -506,7 +516,6 @@
       return encodeURIComponent(lines.join('\n'));
     }
 
-    // >>>>>>>> ADICIONADO: montar payload pro servidor (impressão/planilha)
     function buildOrderPayload(){
       const name = document.getElementById('customerName').value.trim();
       const phone = normalizeDigits(document.getElementById('customerPhone').value);
@@ -515,7 +524,7 @@
       const obs = document.getElementById('noteText').value.trim();
 
       return {
-        number: Date.now(), // por enquanto
+        number: Date.now(),
         name,
         phone,
         address,
@@ -530,19 +539,17 @@
     }
 
     function send(){
-      // BLOQUEIO FINAL (mesmo se o botão “bugasse”)
       if(state.cart.length === 0){
         alert('Adicione pelo menos 1 item no carrinho.');
         return;
       }
-
       const phone = normalizeDigits(WHATSAPP_PHONE);
       if(!phone || phone.length < 10){
         alert('Número do WhatsApp inválido.');
         return;
       }
 
-      // >>>>>>>> ADICIONADO: envia para o servidor (silencioso, sem popup pro cliente)
+      // Envia para servidor (silencioso)
       try{
         fetch(`${SERVER_URL}/order`, {
           method: 'POST',
@@ -553,7 +560,7 @@
         console.warn('Falha ao tentar enviar para servidor:', err);
       }
 
-      // >>>>>>>> AJUSTE: abrir WhatsApp no celular (window.open costuma ser bloqueado)
+      // Abre WhatsApp: no celular usar location (evita bloqueio)
       const url = `https://wa.me/${phone}?text=${buildWhatsAppText()}`;
       if(isMobile()){
         window.location.href = url;
@@ -561,7 +568,7 @@
         window.open(url, '_blank');
       }
 
-      // >>>>>>>> FINALIZA COMPRA: limpa carrinho e fecha no mobile (sem tela preta)
+      // Finaliza compra
       state.cart = [];
       renderCart();
       if(isMobile()) setCartOpen(false);

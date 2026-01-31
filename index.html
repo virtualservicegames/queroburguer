@@ -236,6 +236,7 @@
       <div class="logoBox">
         <!-- coloque sua logo em images/logo.png -->
         <img src="images/logo.png" alt="Quero Burguer" onerror="this.style.display='none'; this.parentElement.innerHTML='<b style=&quot;color:#ffb000&quot;>QB</b>';">
+
       </div>
 
       <div class="brand">
@@ -298,6 +299,10 @@
   <script>
     // ========= CONFIG =========
     const WHATSAPP_PHONE = '5521992497289'; // 55 + DDD + número (só dígitos)
+
+    // >>>>>>>> ADICIONADO: URL do servidor (Cloudflare Quick Tunnel)
+    // Troque quando o link mudar
+    const SERVER_URL = 'https://leon-doctrine-functional-canberra.trycloudflare.com';
 
     // ========= PRODUTOS (um só para PC e celular) =========
     const PRODUCTS = [
@@ -492,18 +497,65 @@
       return encodeURIComponent(lines.join('\n'));
     }
 
+    // >>>>>>>> ADICIONADO: montar payload pro servidor (impressão/planilha)
+    function buildOrderPayload(){
+      const name = document.getElementById('customerName').value.trim();
+      const phone = normalizeDigits(document.getElementById('customerPhone').value);
+      const address = document.getElementById('customerAddress').value.trim();
+      const pay = document.getElementById('paymentMethod').value;
+      const obs = document.getElementById('noteText').value.trim();
+
+      return {
+        number: Date.now(), // por enquanto
+        name,
+        phone,
+        address,
+        payment: pay,
+        note: obs,
+        items: state.cart.map(i => ({
+          name: i.name,
+          qty: i.qty,
+          price: i.price
+        }))
+      };
+    }
+
     function send(){
       // BLOQUEIO FINAL (mesmo se o botão “bugasse”)
       if(state.cart.length === 0){
         alert('Adicione pelo menos 1 item no carrinho.');
         return;
       }
+
       const phone = normalizeDigits(WHATSAPP_PHONE);
       if(!phone || phone.length < 10){
         alert('Número do WhatsApp inválido.');
         return;
       }
-      window.open(`https://wa.me/${phone}?text=${buildWhatsAppText()}`,'_blank');
+
+      // >>>>>>>> ADICIONADO: envia para o servidor (silencioso, sem popup pro cliente)
+      try{
+        fetch(`${SERVER_URL}/order`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(buildOrderPayload())
+        }).catch(err => console.warn('Servidor/impressão indisponível:', err));
+      }catch(err){
+        console.warn('Falha ao tentar enviar para servidor:', err);
+      }
+
+      // >>>>>>>> AJUSTE: abrir WhatsApp no celular (window.open costuma ser bloqueado)
+      const url = `https://wa.me/${phone}?text=${buildWhatsAppText()}`;
+      if(isMobile()){
+        window.location.href = url;
+      }else{
+        window.open(url, '_blank');
+      }
+
+      // >>>>>>>> FINALIZA COMPRA: limpa carrinho e fecha no mobile (sem tela preta)
+      state.cart = [];
+      renderCart();
+      if(isMobile()) setCartOpen(false);
     }
 
     function clearCart(){
@@ -520,10 +572,6 @@
     renderProducts();
     renderCart();
     applyLayout();
-
-    // segurança extra: garante bloqueio inicial mesmo com cache estranho
-    sendBtn.disabled = true;
-    clearBtn.disabled = true;
   </script>
 </body>
 </html>

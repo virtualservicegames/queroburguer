@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Quero Burguer – Cardápio</title>
+  <style>
+    :root{
+      --bg:#0f0f10; --card:#16171a; --muted:#a9abb3; --text:#fff;
+      --primary:#ffb000; --primary-contrast:#222; --danger:#ff4d4f; --ok:#22c55e;
+      --radius:16px; --shadow:0 10px 30px rgba(0,0,0,.35);
+    }
+    *{box-sizing:border-box} html,body{height:100%}
+    body{margin:0;font-family:system-ui,Segoe UI,Roboto,Arial,sans-serif;
+      background:linear-gradient(180deg,#0c0c0d,#121316 40%,#0c0c0d);color:var(--text);}
+    header{position:sticky;top:0;z-index:5;backdrop-filter:blur(6px);
+      background:rgba(18,19,22,.7);border-bottom:1px solid #1f2024;}
+    .topbar{max-width:1100px;margin:0 auto;padding:14px 16px;display:flex;gap:12px;align-items:center}
+    .logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(145deg,#ffcc4d,#ff9800);
+      display:grid;place-items:center;box-shadow:var(--shadow)}
+    .logo b{color:#1e1f23}
+    .brand h1{font-size:18px;margin:0}
+    .brand p{margin:2px 0 0;color:var(--muted);font-size:12px}
+    .nav{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
+    .chip{padding:8px 12px;border-radius:999px;background:#1b1d21;color:#d9dbe1;
+      border:1px solid #262830;cursor:pointer;font-size:13px;transition:.2s}
+    .chip.active,.chip:hover{background:var(--primary);color:var(--primary-contrast);border-color:transparent}
+    .wrap{max-width:1100px;margin:18px auto;padding:0 16px;display:grid;grid-template-columns:1fr 360px;gap:18px}
+    @media (max-width: 960px){.wrap{grid-template-columns:1fr}}
+    .grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}
+    .card{background:var(--card);border:1px solid #1f2024;border-radius:var(--radius);
+      box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column;transition:transform .2s}
+    .card:hover{transform:translateY(-2px)}
+    .thumb{aspect-ratio:16/10;width:100%;object-fit:cover;background:#0c0c0d}
+    .pad{padding:12px}
+    .title{font-weight:700;margin:0 0 6px}
+    .desc{color:var(--muted);font-size:14px;line-height:1.35;margin:0 0 10px;min-height:38px}
+    .priceRow{display:flex;align-items:center;justify-content:space-between}
+    .price{font-weight:800;font-size:18px}
+    .qty{display:inline-flex;align-items:center;gap:8px;border:1px solid #2a2b31;border-radius:999px;padding:4px 8px}
+    .qty button{background:transparent;border:0;font-size:18px;width:26px;height:26px;cursor:pointer;color:var(--text)}
+    .qty input{width:36px;text-align:center;border:0;background:transparent;color:var(--text);font-size:14px}
+    .addBtn{margin-top:10px;width:100%;padding:10px 12px;border-radius:12px;border:0;cursor:pointer;
+      background:var(--primary);color:var(--primary-contrast);font-weight:800;letter-spacing:.3px}
+    .cart{position:sticky;top:76px;align-self:start;background:#14151a;border:1px solid #1f2024;border-radius:var(--radius);box-shadow:var(--shadow)}
+    .cart h3{margin:0;padding:14px 14px 0}
+    .cart .items{padding:8px 14px;display:flex;flex-direction:column;gap:10px;max-height:40vh;overflow:auto}
+    .line{display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:center;background:#101115;border:1px solid #1d1f25;border-radius:12px;padding:10px}
+    .line .name{font-weight:700}
+    .line .unit{color:var(--muted);font-size:12px}
+    .line .subtotal{font-weight:700}
+    .note{margin:8px 14px 0;display:grid;gap:8px}
+    .note textarea,.note input,.note select{
+      width:100%;border-radius:12px;background:#0f1013;border:1px solid #2a2b31;color:var(--text);padding:10px
+    }
+    .note textarea{min-height:64px;resize:vertical}
+    .totals{border-top:1px dashed #2a2b31;margin:10px 14px 0;padding:10px 0;display:grid;gap:6px}
+    .row{display:flex;justify-content:space-between;align-items:center}
+    .actions{display:grid;gap:10px;padding:14px}
+    .btn{padding:12px;border-radius:12px;border:0;cursor:pointer;font-weight:800;letter-spacing:.3px}
+    .btn.whatsapp{background:var(--ok);color:#08150c}
+    .btn.clear{background:var(--danger);color:#1e0f10}
+    .btn:disabled{opacity:.6;cursor:not-allowed}
+    .mini{color:var(--muted);font-size:12px;margin:0 14px 12px}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="topbar">
+      <div class="logo"><b>QB</b></div>
+      <div class="brand">
+        <h1>Quero Burguer</h1>
+        <p>Cardápio digital com pedido via WhatsApp</p>
+      </div>
+      <nav class="nav" id="categoryChips"></nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section><div class="grid" id="productGrid"></div></section>
+
+    <aside class="cart">
+      <h3>Carrinho</h3>
+      <div class="items" id="cartItems"></div>
+
+      <div class="note">
+        <input id="customerName" placeholder="Nome do cliente" />
+        <input id="customerPhone" placeholder="Celular (DDD + número)" inputmode="numeric" />
+        <input id="customerAddress" placeholder="Endereço (Rua, número, bairro)" />
+        <select id="paymentMethod">
+          <option value="Dinheiro">Dinheiro</option>
+          <option value="Pix">Pix</option>
+          <option value="Cartão (crédito)">Cartão (crédito)</option>
+          <option value="Cartão (débito)">Cartão (débito)</option>
+        </select>
+        <textarea id="noteText" placeholder="Observação: sem cebola, ponto da carne, sem gelo..."></textarea>
+      </div>
+      <p class="mini">Ao finalizar: envia para o WhatsApp e também para a impressora (via servidor da loja).</p>
+
+      <div class="totals">
+        <div class="row"><span>Subtotal</span><strong id="subtotal">R$ 0,00</strong></div>
+        <div class="row"><span>Taxa (0%)</span><strong id="fee">R$ 0,00</strong></div>
+        <div class="row"><span>Total</span><strong id="total">R$ 0,00</strong></div>
+      </div>
+
+      <div class="actions">
+        <button class="btn whatsapp" id="sendBtn" disabled>Finalizar pedido</button>
+        <button class="btn clear" id="clearBtn" disabled>Limpar carrinho</button>
+      </div>
+    </aside>
+  </main>
+
+  <script>
+    // ===================== CONFIG =====================
+    const WHATSAPP_PHONE = '5521992497289'; // seu WhatsApp (recebe a mensagem)
+    const FEE_PERCENT = 0;
+
+    // IMPORTANTE sobre impressão:
+    // Por segurança do navegador, um site HTTPS (GitHub Pages) NÃO pode enviar pedido para um servidor HTTP local.
+    // Solução recomendada: expor o servidor local com HTTPS via Cloudflare Tunnel (tutorial no README do projeto).
+    // Quando você configurar o tunnel, coloque aqui a URL HTTPS dele:
+    // Ex.: 'https://xxxx.trycloudflare.com'
+    const ORDER_API_BASE = 'https://SEU_TUNNEL_HTTPS_AQUI'; // <-- edite
+
+    // ===================== PRODUTOS =====================
+    const PRODUCTS = [
+      { id:'xsmash', name:'Quero Smash 140g', price:11.90, category:'Lanches', desc:'Pão brioche, 140g smash, queijo prato e maionese da casa.', image:'images/smash.jpg' },
+      { id:'xbacon', name:'Quero Bacon', price:18.90, category:'Lanches', desc:'Carne 160g, bacon crocante, cheddar e molho especial.', image:'images/bacon.jpg' },
+      { id:'combo1', name:'Combo Individual', price:29.90, category:'Combos', desc:'1 X-Burguer + Batata P + Refrigerante 250ml.', image:'images/combo1.jpg' },
+      { id:'comboFamilia', name:'Combo Família 2', price:59.90, category:'Combos', desc:'2 lanches à escolha + 2 batatas M + 2 bebidas 350ml.', image:'images/combo_familia.jpg' },
+      { id:'batata', name:'Batata Crinkle M', price:9.90, category:'Acompanhamentos', desc:'Batata crocante estilo crinkle.', image:'images/batata.jpg' },
+      { id:'guaramor', name:'Guaramor 250ml', price:4.90, category:'Bebidas', desc:'Refrigerante guaraná 250ml.', image:'images/guaramor.jpg' },
+    ];
+
+    // ===================== ESTADO =====================
+    const state = { category:'Todos', cart:[] };
+    const formatBRL = (n) => n.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+    const unique = (arr) => [...new Set(arr)];
+    const normalizeDigits = (s) => String(s||'').replace(/\D+/g,'');
+
+    // ===================== UI =====================
+    function renderCategories(){
+      const cats=['Todos',...unique(PRODUCTS.map(p=>p.category))];
+      const nav=document.getElementById('categoryChips'); nav.innerHTML='';
+      cats.forEach(cat=>{
+        const b=document.createElement('button');
+        b.className='chip'+(state.category===cat?' active':'');
+        b.textContent=cat;
+        b.onclick=()=>{state.category=cat;renderCategories();renderProducts();};
+        nav.appendChild(b);
+      });
+    }
+
+    function productCard(p){
+      const wrap=document.createElement('article'); wrap.className='card';
+      wrap.innerHTML=`
+        <img class="thumb" src="${p.image}" alt="${p.name}">
+        <div class="pad">
+          <h4 class="title">${p.name}</h4>
+          <p class="desc">${p.desc||''}</p>
+          <div class="priceRow">
+            <span class="price">${formatBRL(p.price)}</span>
+            <div class="qty">
+              <button type="button">−</button>
+              <input type="number" min="1" value="1"/>
+              <button type="button">+</button>
+            </div>
+          </div>
+          <button class="addBtn">Adicionar</button>
+        </div>`;
+      const [minus,input,plus]=wrap.querySelectorAll('.qty>*');
+      minus.onclick=()=>{input.value=Math.max(1,(parseInt(input.value)||1)-1)};
+      plus.onclick =()=>{input.value=(parseInt(input.value)||1)+1};
+      wrap.querySelector('.addBtn').onclick=()=>addToCart(p,parseInt(input.value)||1);
+      return wrap;
+    }
+
+    function renderProducts(){
+      const grid=document.getElementById('productGrid'); grid.innerHTML='';
+      const list=state.category==='Todos'?PRODUCTS:PRODUCTS.filter(p=>p.category===state.category);
+      list.forEach(p=>grid.appendChild(productCard(p)));
+    }
+
+    // ===================== CARRINHO =====================
+    function addToCart(product,qty=1){
+      const f=state.cart.find(i=>i.id===product.id);
+      if(f){f.qty+=qty}else{state.cart.push({id:product.id,name:product.name,price:product.price,qty})}
+      renderCart();
+    }
+    function removeFromCart(id){ state.cart=state.cart.filter(i=>i.id!==id); renderCart(); }
+    function updateQty(id,delta){ const it=state.cart.find(i=>i.id===id); if(!it)return; it.qty=Math.max(1,it.qty+delta); renderCart(); }
+
+    function cartLine(it){
+      const line=document.createElement('div'); line.className='line';
+      line.innerHTML=`<div><div class="name">${it.name}</div><div class="unit">${formatBRL(it.price)} • qtd ${it.qty}</div></div>
+      <div class="subtotal">${formatBRL(it.price*it.qty)}</div>
+      <div style="display:flex;gap:6px">
+        <button class="chip">−</button><button class="chip">+</button>
+        <button class="chip" style="background:#1f1212;color:#ffbaba;border-color:#3a1616">×</button>
+      </div>`;
+      const [minus,plus,del]=line.querySelectorAll('button');
+      minus.onclick=()=>updateQty(it.id,-1); plus.onclick=()=>updateQty(it.id,1); del.onclick=()=>removeFromCart(it.id);
+      return line;
+    }
+
+    function renderCart(){
+      const box=document.getElementById('cartItems'); box.innerHTML='';
+      state.cart.forEach(i=>box.appendChild(cartLine(i)));
+      const subtotal=state.cart.reduce((s,i)=>s+i.price*i.qty,0);
+      const fee=subtotal*(FEE_PERCENT/100); const total=subtotal+fee;
+      document.getElementById('subtotal').textContent=formatBRL(subtotal);
+      document.getElementById('fee').textContent=formatBRL(fee);
+      document.getElementById('total').textContent=formatBRL(total);
+      const has=state.cart.length>0;
+      document.getElementById('sendBtn').disabled=!has;
+      document.getElementById('clearBtn').disabled=!has;
+    }
+
+    // ===================== WHATSAPP =====================
+    function buildWhatsAppMessage(note, orderNo){
+      const lines=[];
+      lines.push('🧾 *Pedido – Quero Burguer*');
+      if(orderNo) lines.push(`*WhatsApp ${orderNo}*`);
+      lines.push('');
+      state.cart.forEach(i=>lines.push(`• ${i.qty}x ${i.name} — ${formatBRL(i.price*i.qty)}`));
+      const subtotal=state.cart.reduce((s,i)=>s+i.price*i.qty,0);
+      const fee=subtotal*(FEE_PERCENT/100); const total=subtotal+fee;
+      lines.push('');
+      lines.push(`Total: *${formatBRL(total)}*`);
+      if(note) { lines.push(''); lines.push(`Obs.: ${note}`); }
+      return encodeURIComponent(lines.join('\n'));
+    }
+
+    function openWhatsApp(text){
+      const phone=normalizeDigits(WHATSAPP_PHONE);
+      const urls=[
+        `https://wa.me/${phone}?text=${text}`,
+        `https://api.whatsapp.com/send?phone=${phone}&text=${text}`,
+        `https://web.whatsapp.com/send?phone=${phone}&text=${text}`
+      ];
+      let opened=false;
+      for(const u of urls){const w=window.open(u,'_blank'); if(w){opened=true;break;}}
+      if(!opened){ try{window.location.href=urls[0]; opened=true;}catch(e){} }
+      if(!opened){ const decoded=decodeURIComponent(text); navigator.clipboard?.writeText(decoded).catch(()=>{});
+        alert('Não consegui abrir o WhatsApp. O texto foi copiado. Abra o WhatsApp e cole.'); }
+    }
+
+    // ===================== ENVIAR PARA A IMPRESSORA (API) =====================
+    async function sendToPrinterAPI(payload){
+      if(!ORDER_API_BASE || ORDER_API_BASE.includes('SEU_TUNNEL_HTTPS_AQUI')){
+        return { ok:false, error:'API não configurada (ORDER_API_BASE). Veja o README.' };
+      }
+      const url = ORDER_API_BASE.replace(/\/$/, '') + '/order';
+      const res = await fetch(url, {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify(payload)
+      });
+      if(!res.ok){
+        const t = await res.text().catch(()=>'');
+        return { ok:false, error:`HTTP ${res.status} ${t}` };
+      }
+      return await res.json();
+    }
+
+    function validateCustomer(){
+      const name = document.getElementById('customerName').value.trim();
+      const phone = normalizeDigits(document.getElementById('customerPhone').value);
+      const address = document.getElementById('customerAddress').value.trim();
+      const pay = document.getElementById('paymentMethod').value;
+      if(!name) return {ok:false, msg:'Informe o nome do cliente.'};
+      if(phone.length < 10) return {ok:false, msg:'Informe um celular válido (DDD + número).'};
+      if(!address) return {ok:false, msg:'Informe o endereço.'};
+      return {ok:true, name, phone, address, pay};
+    }
+
+    async function finalizeOrder(){
+      if(state.cart.length===0) return;
+
+      const cust = validateCustomer();
+      if(!cust.ok){ alert(cust.msg); return; }
+
+      const note = document.getElementById('noteText').value.trim();
+      const subtotal=state.cart.reduce((s,i)=>s+i.price*i.qty,0);
+      const fee=subtotal*(FEE_PERCENT/100);
+      const total=subtotal+fee;
+
+      // 1) Envia para a API (impressão)
+      let apiResult = null;
+      try{
+        apiResult = await sendToPrinterAPI({
+          source: 'WhatsApp',
+          customer_name: cust.name,
+          customer_phone: cust.phone,
+          customer_address: cust.address,
+          payment_method: cust.pay,
+          note: note,
+          items: state.cart.map(i=>({id:i.id, name:i.name, qty:i.qty, price:i.price})),
+          totals: { subtotal, fee, total }
+        });
+      }catch(e){
+        apiResult = { ok:false, error: String(e) };
+      }
+
+      // 2) Abre o WhatsApp (mensagem)
+      const orderNo = apiResult && apiResult.order_no ? apiResult.order_no : '';
+      const waText = buildWhatsAppMessage(note, orderNo);
+      openWhatsApp(waText);
+
+      // 3) Feedback
+      if(!apiResult || apiResult.ok===false){
+        console.warn('Falha ao enviar para impressão:', apiResult);
+        alert('Pedido enviado para o WhatsApp, mas NÃO consegui enviar para a impressora (API).\nVeja o README para configurar o servidor/túnel.');
+      }else{
+        alert('Pedido finalizado! Número: ' + apiResult.order_no + ' (impresso na loja)');
+        state.cart = []; renderCart();
+        document.getElementById('noteText').value='';
+      }
+    }
+
+    function clearCart(){ if(confirm('Deseja limpar o carrinho?')){state.cart=[]; renderCart();} }
+
+    document.getElementById('sendBtn').addEventListener('click', finalizeOrder);
+    document.getElementById('clearBtn').addEventListener('click', clearCart);
+
+    renderCategories(); renderProducts(); renderCart();
+  </script>
+</body>
+</html>

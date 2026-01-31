@@ -159,19 +159,36 @@
 
     /* ======= Mobile: carrinho vira gaveta ======= */
     @media (max-width: 960px){
-      main.wrap{ padding-bottom: 120px; } /* espaço pro botão flutuante */
+  main.wrap{ padding-bottom: 120px; }
 
-      .cart{
-        position: fixed;
-        left: 0; right: 0;
-        bottom: 0; top: auto;
-        border-radius: 18px 18px 0 0;
-        max-height: 84vh;
-        transform: translateY(74%);
-        transition: transform .22s ease;
-        z-index: 30;
-      }
-      .cart.open{ transform: translateY(0); }
+  /* no mobile o carrinho fica 100% escondido */
+  .cart{
+    position: fixed;
+    left: 0; right: 0;
+    bottom: 0;
+    top: auto;
+    border-radius: 18px 18px 0 0;
+    max-height: 84vh;
+
+    transform: translateY(110%); /* some completamente */
+    transition: transform .22s ease;
+    z-index: 30;
+
+    pointer-events: none; /* impede clicar quando fechado */
+  }
+
+  .cart.open{
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  /* lista do carrinho com rolagem */
+  .cart .items{ max-height: 30vh; }
+
+  /* inputs menores */
+  .note input, .note select, .note textarea{ padding: 10px; font-size: 14px; }
+}
+
 
       .cart .items{ max-height: 30vh; }
 

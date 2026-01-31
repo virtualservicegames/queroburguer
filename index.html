@@ -22,9 +22,9 @@
 
     header{
       position:sticky;top:0;z-index:10;
-      backdrop-filter:blur(6px);
-      background:rgba(18,19,22,.85);
-      border-bottom:1px solid #1f2024;
+      backdrop-filter:blur(8px);
+      background:rgba(18,19,22,.78);
+      border-bottom:1px solid rgba(255,255,255,.06);
     }
     .topbar{
       max-width:1100px;margin:0 auto;padding:12px 14px;
@@ -34,7 +34,8 @@
     /* LOGO imagem */
     .logoBox{
       width:44px;height:44px;border-radius:14px;
-      background:#101115;border:1px solid #1f2024;
+      background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.08);
       display:grid;place-items:center;overflow:hidden;
       box-shadow:var(--shadow);
       flex: 0 0 auto;
@@ -47,52 +48,45 @@
     .brand h1{font-size:18px;margin:0;line-height:1.1}
     .brand p{margin:3px 0 0;color:var(--muted);font-size:12px}
 
-    /* Categorias */
-    .nav{
-      margin-left:0;                 /* mobile: começa da esquerda */
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-      max-width:520px;
-      justify-content:flex-start;
+    /* Barra flutuante das categorias (linha de baixo) */
+    .catbar{
+      max-width:1100px;
+      margin:0 auto;
+      padding: 0 14px 12px;
     }
+    .nav{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;            /* <-- quebra linha se precisar */
+      justify-content:flex-start;
+      background: rgba(20,21,26,.55); /* opaco/flutuante */
+      border: 1px solid rgba(255,255,255,.07);
+      border-radius: 16px;
+      padding: 10px;
+      box-shadow: 0 8px 22px rgba(0,0,0,.30);
+    }
+
     .chip{
       padding:8px 12px;border-radius:999px;
-      background:#1b1d21;color:#d9dbe1;border:1px solid #262830;
+      background:rgba(255,255,255,.04);
+      color:#e9e9ee;
+      border:1px solid rgba(255,255,255,.08);
       cursor:pointer;font-size:13px;transition:.2s;user-select:none;
       white-space:nowrap;
     }
     .chip.active,.chip:hover{
-      background:var(--primary);color:var(--primary-contrast);border-color:transparent
+      background:var(--primary);
+      color:var(--primary-contrast);
+      border-color:transparent;
+      box-shadow: 0 10px 22px rgba(255,176,0,.18);
     }
 
-    /* Desktop: volta a alinhar na direita (como antes) */
-    @media (min-width: 721px){
+    /* No mobile: permite rolar horizontalmente se ficar comprido,
+       mas também quebra linha se você quiser (wrap já faz isso).
+       Aqui eu deixo "bonito" e sem sumir. */
+    @media (max-width: 720px){
       .nav{
-        margin-left:auto;
-        justify-content:flex-end;
-      }
-    }
-
-    /* No mobile (até 960px): rolagem horizontal */
-    @media (max-width: 960px){
-      .nav{
-        max-width:none;
-        flex-wrap:nowrap;
-        overflow-x:auto;
-        overflow-y:hidden;
-        -webkit-overflow-scrolling:touch;
-        scrollbar-width:none;
-        justify-content:flex-start;
-        padding: 6px 2px 10px;
         gap:10px;
-      }
-      .nav::-webkit-scrollbar{display:none}
-
-      /* efeito “fade” nas laterais pra indicar rolagem */
-      .nav{
-        mask-image: linear-gradient(to right, transparent 0, black 18px, black calc(100% - 18px), transparent 100%);
-        -webkit-mask-image: linear-gradient(to right, transparent 0, black 18px, black calc(100% - 18px), transparent 100%);
       }
     }
 
@@ -112,18 +106,21 @@
     }
 
     .card{
-      background:var(--card);
-      border:1px solid #1f2024;
+      background:rgba(22,23,26,.92);
+      border:1px solid rgba(255,255,255,.07);
       border-radius:var(--radius);
       box-shadow:var(--shadow);
       overflow:hidden;
       display:flex;flex-direction:column;
-      transition:transform .15s ease;
+      transition:transform .15s ease, border-color .15s ease;
     }
-    .card:hover{transform:translateY(-1px)}
+    .card:hover{
+      transform:translateY(-1px);
+      border-color: rgba(255,176,0,.20);
+    }
 
     .thumb{
-      aspect-ratio:1/1; /* bom pra 2 colunas */
+      aspect-ratio:1/1;
       width:100%;
       object-fit:cover;
       background:#0c0c0d;
@@ -138,7 +135,9 @@
 
     .qty{
       display:inline-flex;align-items:center;gap:6px;
-      border:1px solid #2a2b31;border-radius:999px;padding:2px 6px
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:999px;padding:2px 6px;
+      background: rgba(0,0,0,.20);
     }
     .qty button{
       background:transparent;border:0;color:#fff;
@@ -157,9 +156,11 @@
 
     /* Carrinho (desktop) */
     .cart{
-      position:sticky;top:76px;align-self:start;
-      background:#14151a;border:1px solid #1f2024;
-      border-radius:var(--radius);box-shadow:var(--shadow);
+      position:sticky;top:86px;align-self:start;
+      background:rgba(20,21,26,.92);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
       overflow:hidden;
     }
     .cartHeader{
@@ -173,7 +174,9 @@
       max-height:40vh;overflow:auto
     }
     .line{
-      background:#101115;border:1px solid #1d1f25;border-radius:12px;
+      background:rgba(0,0,0,.20);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:12px;
       padding:10px;display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:center
     }
     .line .name{font-weight:900;font-size:13px}
@@ -182,13 +185,14 @@
 
     .note{margin:8px 14px 0;display:grid;gap:8px}
     .note textarea,.note input,.note select{
-      width:100%;border-radius:12px;background:#0f1013;border:1px solid #2a2b31;
+      width:100%;border-radius:12px;background:rgba(0,0,0,.25);
+      border:1px solid rgba(255,255,255,.10);
       color:#fff;padding:10px;font-size:14px
     }
     .note textarea{min-height:64px;resize:vertical}
 
     .totals{
-      border-top:1px dashed #2a2b31;
+      border-top:1px dashed rgba(255,255,255,.15);
       margin:10px 14px 0;padding:10px 0;display:grid;gap:6px
     }
     .row{display:flex;justify-content:space-between;align-items:center}
@@ -202,7 +206,7 @@
     .btn.clear{background:var(--danger);color:#1e0f10}
     .btn:disabled{opacity:.55;cursor:not-allowed}
 
-    /* Mobile: carrinho totalmente escondido quando fechado */
+    /* Mobile: carrinho escondido quando fechado */
     @media (max-width: 960px){
       main.wrap{ padding-bottom: 120px; }
 
@@ -223,17 +227,29 @@
       #toggleCartBtn{ display:none; }
     }
 
-    /* Botão flutuante (mobile) */
+    /* Botão flutuante (mobile) - cores mudam via JS */
     .fabCart{
       position:fixed;right:16px;bottom:16px;
       width:58px;height:58px;border-radius:18px;
-      border:1px solid #2a2b31;background:#14151a;
+      border:1px solid rgba(255,255,255,.10);
       box-shadow:var(--shadow);
       display:none;place-items:center;
       cursor:pointer;z-index:40;
+      transition: background .2s ease, color .2s ease, border-color .2s ease;
     }
     .fabCart svg{ width:26px;height:26px; }
     @media (max-width: 960px){ .fabCart{ display:grid; } }
+
+    .fabCart.empty{
+      background: rgba(255,255,255,.88);
+      color:#111;
+      border-color: rgba(0,0,0,.10);
+    }
+    .fabCart.filled{
+      background: var(--primary);
+      color: var(--primary-contrast);
+      border-color: transparent;
+    }
 
     .badge{
       position:absolute;top:-8px;right:-8px;
@@ -255,15 +271,18 @@
     <div class="topbar">
       <div class="logoBox">
         <!-- coloque sua logo em images/logo.png -->
-        <img src="images/logo.png" alt="Quero Burguer" onerror="this.style.display='none'; this.parentElement.innerHTML='<b style=&quot;color:#ffb000&quot;>QB</b>';">
-
+        <img src="images/logo.jpeg" alt="Quero Burguer"
+             onerror="this.style.display='none'; this.parentElement.innerHTML='<b style=&quot;color:#ffb000&quot;>QB</b>';">
       </div>
 
       <div class="brand">
         <h1>Quero Burguer</h1>
         <p>Cardápio digital com pedido via WhatsApp</p>
       </div>
+    </div>
 
+    <!-- CATEGORIAS EM LINHA DE BAIXO -->
+    <div class="catbar">
       <nav class="nav" id="categoryChips"></nav>
     </div>
   </header>
@@ -299,14 +318,13 @@
       </div>
 
       <div class="actions">
-        <!-- BLOQUEIO já no HTML -->
         <button class="btn whatsapp" id="sendBtn" disabled>Enviar WhatsApp</button>
         <button class="btn clear" id="clearBtn" disabled>Limpar carrinho</button>
       </div>
     </aside>
   </main>
 
-  <button class="fabCart" id="fabCart" type="button" aria-label="Abrir carrinho">
+  <button class="fabCart empty" id="fabCart" type="button" aria-label="Abrir carrinho">
     <span class="badge" id="cartBadge" style="display:none;">0</span>
     <svg viewBox="0 0 24 24" fill="none">
       <path d="M6 6h15l-1.5 9h-12L6 6Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
@@ -318,12 +336,10 @@
 
   <script>
     // ========= CONFIG =========
-    const WHATSAPP_PHONE = '5521992497289'; // 55 + DDD + número (só dígitos)
-
-    // URL FIXA DO SEU QUICK TUNNEL (troque quando mudar)
+    const WHATSAPP_PHONE = '5521992497289';
     const SERVER_URL = 'https://leon-doctrine-functional-canberra.trycloudflare.com';
 
-    // ========= PRODUTOS (um só para PC e celular) =========
+    // ========= PRODUTOS =========
     const PRODUCTS = [
       { id:'xsmash', name:'Quero Smash 140g', price:11.90, category:'Lanches', desc:'Pão brioche, 140g smash, queijo prato e maionese da casa.', image:'images/smash.jpg' },
       { id:'xbacon', name:'Quero Bacon', price:18.90, category:'Lanches', desc:'Carne 160g, bacon crocante, cheddar e molho especial.', image:'images/bacon.jpg' },
@@ -455,6 +471,12 @@
       }
     }
 
+    function updateFabColor(){
+      const has = state.cart.length > 0;
+      fabCart.classList.toggle('filled', has);
+      fabCart.classList.toggle('empty', !has);
+    }
+
     function renderCart(){
       const box = document.getElementById('cartItems');
       box.innerHTML = '';
@@ -464,11 +486,11 @@
 
       const has = state.cart.length > 0;
 
-      // BLOQUEIO (vale para PC e celular)
       sendBtn.disabled = !has;
       clearBtn.disabled = !has;
 
       updateBadge();
+      updateFabColor();
     }
 
     // ========= ABRIR / FECHAR (mobile) =========
@@ -530,11 +552,7 @@
         address,
         payment: pay,
         note: obs,
-        items: state.cart.map(i => ({
-          name: i.name,
-          qty: i.qty,
-          price: i.price
-        }))
+        items: state.cart.map(i => ({ name: i.name, qty: i.qty, price: i.price }))
       };
     }
 
@@ -549,18 +567,16 @@
         return;
       }
 
-      // Envia para servidor (silencioso)
+      // servidor (silencioso)
       try{
         fetch(`${SERVER_URL}/order`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(buildOrderPayload())
-        }).catch(err => console.warn('Servidor/impressão indisponível:', err));
-      }catch(err){
-        console.warn('Falha ao tentar enviar para servidor:', err);
-      }
+        }).catch(()=>{});
+      }catch(e){}
 
-      // Abre WhatsApp: no celular usar location (evita bloqueio)
+      // WhatsApp (mobile sem bloqueio)
       const url = `https://wa.me/${phone}?text=${buildWhatsAppText()}`;
       if(isMobile()){
         window.location.href = url;
@@ -568,7 +584,7 @@
         window.open(url, '_blank');
       }
 
-      // Finaliza compra
+      // finaliza
       state.cart = [];
       renderCart();
       if(isMobile()) setCartOpen(false);

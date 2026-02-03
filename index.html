@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
@@ -330,6 +330,78 @@
       z-index:25;display:none;
     }
     .overlay.show{display:block}
+
+    /* ===================== MODAL (BEBIDA + ADICIONAIS) ===================== */
+    .modalOverlay{
+      position:fixed; inset:0;
+      background:rgba(0,0,0,.60);
+      z-index:80;
+      display:none;
+    }
+    .modal{
+      position:fixed;
+      left:50%; top:50%;
+      transform:translate(-50%,-50%);
+      width:min(740px, calc(100vw - 28px));
+      max-height:min(86vh, 860px);
+      background:rgba(20,21,26,.96);
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:18px;
+      box-shadow: var(--shadow);
+      z-index:90;
+      display:none;
+      overflow:hidden;
+    }
+    .modalHeader{
+      padding:14px 14px 10px;
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      border-bottom:1px solid rgba(255,255,255,.08);
+    }
+    .modalTitle{ font-weight:900; font-size:16px; }
+    .modalSub{ color:var(--muted); font-size:12px; margin-top:2px; }
+    .modalBody{ padding:12px 14px; overflow:auto; }
+    .modalSection{ margin-bottom:14px; }
+    .modalLabel{ font-weight:900; font-size:13px; margin-bottom:6px; }
+    .modalHint{ color:var(--muted); font-size:12px; }
+    .optionsGrid{
+      display:grid; gap:10px; margin-top:10px;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    }
+    .optionCard{
+      background:rgba(0,0,0,.22);
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:14px;
+      padding:10px;
+      display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
+      cursor:pointer;
+      user-select:none;
+      transition: border-color .15s ease, transform .12s ease;
+    }
+    .optionCard:hover{ transform: translateY(-1px); }
+    .optionCard.active{
+      border-color: rgba(255,176,0,.50);
+      box-shadow: 0 0 0 2px rgba(255,176,0,.10);
+    }
+    .optionLeft{ display:flex; gap:10px; align-items:flex-start; }
+    .optionLeft input{ margin-top:3px; transform:scale(1.1); }
+    .optionName{ font-weight:900; font-size:13px; }
+    .optionPrice{ color:var(--primary); font-weight:900; font-size:13px; white-space:nowrap; }
+    .modalInput{
+      width:100%; border-radius:12px; background:rgba(0,0,0,.25);
+      border:1px solid rgba(255,255,255,.10);
+      color:#fff; padding:10px; font-size:14px;
+    }
+    .modalFooter{
+      padding:12px 14px;
+      border-top:1px solid rgba(255,255,255,.08);
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+    }
+    .modalTotal{ display:grid; gap:2px; }
+    .modalPrice{ font-weight:900; font-size:16px; }
+
+    @media (max-width: 520px){
+      .optionsGrid{ grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 
@@ -411,6 +483,46 @@
     </svg>
   </button>
 
+  <!-- ================= MODAL (BEBIDA + ADICIONAIS) ================= -->
+  <div class="modalOverlay" id="customOverlay"></div>
+
+  <div class="modal" id="customModal" aria-hidden="true">
+    <div class="modalHeader">
+      <div>
+        <div class="modalTitle" id="customTitle">Personalizar</div>
+        <div class="modalSub" id="customSub">Escolha bebida e adicionais</div>
+      </div>
+      <button class="chip" type="button" id="customCloseBtn">Fechar</button>
+    </div>
+
+    <div class="modalBody">
+      <div class="modalSection">
+        <div class="modalLabel">Bebida</div>
+        <div class="modalHint">Escolha 1 (opcional)</div>
+        <div class="optionsGrid" id="drinkOptions"></div>
+      </div>
+
+      <div class="modalSection">
+        <div class="modalLabel">Adicionais</div>
+        <div class="modalHint">Pode marcar vários</div>
+        <div class="optionsGrid" id="addonOptions"></div>
+      </div>
+
+      <div class="modalSection">
+        <div class="modalLabel">Obs. deste lanche</div>
+        <input class="modalInput" id="itemNote" placeholder="Ex.: sem cebola, ponto da carne..." />
+      </div>
+    </div>
+
+    <div class="modalFooter">
+      <div class="modalTotal">
+        <div class="modalHint">Total deste item</div>
+        <div class="modalPrice" id="customItemPrice">R$ 0,00</div>
+      </div>
+      <button class="btn whatsapp" type="button" id="customConfirmBtn">Adicionar ao carrinho</button>
+    </div>
+  </div>
+
   <script>
     // ========= CONFIG =========
     const WHATSAPP_PHONE = '5521992497289';
@@ -427,6 +539,23 @@
       { id:'guaramor', name:'Guaramor 250ml', price:4.90, category:'Bebidas', desc:'Guaraná 250ml.', image:'images/guaramor.jpg' },
       { id:'batatamtb', name:'Batata Turbinada Média', price:23.90, category:'Acompanhamentos', desc:'Inventar algo depois.', image:'images/batatag1.jpeg' },
       { id:'batatagtb', name:'Batata Turbinada Grande', price:27.90, category:'Acompanhamentos', desc:'Inventar algo depois.', image:'images/batatag2.jpeg' },
+    ];
+
+    // ========= ITENS DO MODAL (não aparecem nos produtos gerais) =========
+    // -> Edite aqui os preços e nomes dos adicionais/bebidas do lanche
+    const DRINK_OPTIONS = [
+      { id:'coca_lata', name:'Coca-Cola Lata 350ml', price: 6.00 },
+      { id:'guarana_lata', name:'Guaraná Lata 350ml', price: 5.50 },
+      { id:'suco_uva', name:'Suco Uva 300ml', price: 6.50 },
+      { id:'agua', name:'Água 500ml', price: 3.00 },
+    ];
+
+    const ADDON_OPTIONS = [
+      { id:'bacon', name:'Bacon extra', price: 3.00 },
+      { id:'cheddar', name:'Cheddar extra', price: 3.00 },
+      { id:'queijo', name:'Queijo extra', price: 2.50 },
+      { id:'ovo', name:'Ovo', price: 2.50 },
+      { id:'cebola', name:'Cebola caramelizada', price: 2.50 },
     ];
 
     // ========= ESTADO =========
@@ -466,6 +595,171 @@
       });
     }
 
+    // ========= MODAL (BEBIDA + ADICIONAIS) =========
+    const customOverlay = document.getElementById('customOverlay');
+    const customModal   = document.getElementById('customModal');
+    const customTitle   = document.getElementById('customTitle');
+    const customSub     = document.getElementById('customSub');
+    const drinkBox      = document.getElementById('drinkOptions');
+    const addonBox      = document.getElementById('addonOptions');
+    const itemNote      = document.getElementById('itemNote');
+    const customItemPrice = document.getElementById('customItemPrice');
+    const customCloseBtn  = document.getElementById('customCloseBtn');
+    const customConfirmBtn= document.getElementById('customConfirmBtn');
+
+    const customUI = {
+      open: false,
+      product: null,
+      qty: 1,
+      drinkId: null,
+      addonIds: new Set(),
+    };
+
+    function setCustomOpen(open){
+      customUI.open = open;
+      customOverlay.style.display = open ? 'block' : 'none';
+      customModal.style.display   = open ? 'block' : 'none';
+      customModal.setAttribute('aria-hidden', open ? 'false' : 'true');
+
+      if(!open){
+        customUI.product = null;
+        customUI.qty = 1;
+        customUI.drinkId = null;
+        customUI.addonIds = new Set();
+        itemNote.value = '';
+        drinkBox.innerHTML = '';
+        addonBox.innerHTML = '';
+      }
+    }
+
+    function calcCustomExtrasTotal(){
+      let total = 0;
+      const drink = DRINK_OPTIONS.find(d => d.id === customUI.drinkId);
+      if(drink) total += drink.price;
+
+      for(const id of customUI.addonIds){
+        const a = ADDON_OPTIONS.find(x => x.id === id);
+        if(a) total += a.price;
+      }
+      return total;
+    }
+
+    function updateCustomPrice(){
+      const base = customUI.product ? customUI.product.price : 0;
+      const extras = calcCustomExtrasTotal();
+      const itemTotal = (base + extras) * (customUI.qty || 1);
+      customItemPrice.textContent = formatBRL(itemTotal);
+    }
+
+    function renderOptionCards(container, options, type){
+      container.innerHTML = '';
+      options.forEach(opt=>{
+        const card = document.createElement('div');
+        card.className = 'optionCard';
+
+        const checked =
+          (type === 'drink') ? (customUI.drinkId === opt.id)
+                             : customUI.addonIds.has(opt.id);
+
+        card.classList.toggle('active', checked);
+
+        card.innerHTML = `
+          <div class="optionLeft">
+            <input type="${type==='drink' ? 'radio' : 'checkbox'}" ${checked ? 'checked':''} />
+            <div>
+              <div class="optionName">${opt.name}</div>
+              <div class="modalHint">${type==='drink' ? 'Bebida' : 'Adicional'}</div>
+            </div>
+          </div>
+          <div class="optionPrice">${formatBRL(opt.price)}</div>
+        `;
+
+        card.onclick = ()=>{
+          if(type === 'drink'){
+            // 1 bebida (clicar no mesmo desmarca)
+            customUI.drinkId = (customUI.drinkId === opt.id) ? null : opt.id;
+          }else{
+            if(customUI.addonIds.has(opt.id)) customUI.addonIds.delete(opt.id);
+            else customUI.addonIds.add(opt.id);
+          }
+          renderOptionCards(container, options, type);
+          updateCustomPrice();
+        };
+
+        container.appendChild(card);
+      });
+    }
+
+    function openCustomizer(product, qty){
+      customUI.product = product;
+      customUI.qty = qty || 1;
+
+      customTitle.textContent = product.name;
+      customSub.textContent = `Base: ${formatBRL(product.price)} • qtd ${customUI.qty}`;
+
+      renderOptionCards(drinkBox, DRINK_OPTIONS, 'drink');
+      renderOptionCards(addonBox, ADDON_OPTIONS, 'addon');
+      updateCustomPrice();
+
+      setCustomOpen(true);
+    }
+
+    customCloseBtn.onclick = ()=> setCustomOpen(false);
+    customOverlay.onclick  = ()=> setCustomOpen(false);
+
+    // ESC fecha o modal
+    document.addEventListener('keydown', (e)=>{
+      if(e.key === 'Escape' && customUI.open){
+        setCustomOpen(false);
+      }
+    });
+
+    customConfirmBtn.onclick = ()=>{
+      if(!customUI.product) return;
+
+      const base = customUI.product.price;
+      const drink = DRINK_OPTIONS.find(d => d.id === customUI.drinkId) || null;
+
+      const addons = [...customUI.addonIds]
+        .map(id => ADDON_OPTIONS.find(a => a.id === id))
+        .filter(Boolean);
+
+      const addonsTotal = addons.reduce((s,a)=>s+a.price,0);
+      const drinkTotal = drink ? drink.price : 0;
+
+      const parts = [];
+      if(drink) parts.push(`Bebida: ${drink.name}`);
+      if(addons.length) parts.push(`Add: ${addons.map(a=>a.name).join(', ')}`);
+
+      const noteItem = itemNote.value.trim();
+      if(noteItem) parts.push(`Obs: ${noteItem}`);
+
+      const displayName = parts.length
+        ? `${customUI.product.name} (${parts.join(' • ')})`
+        : customUI.product.name;
+
+      const unitPriceFinal = base + addonsTotal + drinkTotal;
+
+      // id único para não "juntar" com outro lanche diferente
+      state.cart.push({
+        id: `${customUI.product.id}_${Date.now()}`,
+        name: displayName,
+        price: unitPriceFinal,
+        qty: customUI.qty,
+        meta: {
+          baseId: customUI.product.id,
+          baseName: customUI.product.name,
+          drink: drink ? {id: drink.id, name: drink.name, price: drink.price} : null,
+          addons: addons.map(a=>({id:a.id, name:a.name, price:a.price})),
+          noteItem: noteItem
+        }
+      });
+
+      renderCart();
+      if(isMobile()) setCartOpen(true);
+      setCustomOpen(false);
+    };
+
     // ========= PRODUTOS =========
     function productCard(p){
       const wrap = document.createElement('article');
@@ -489,7 +783,19 @@
       const [minus, input, plus] = wrap.querySelectorAll('.qty>*');
       minus.onclick = ()=>{ input.value = Math.max(1, (parseInt(input.value)||1) - 1); };
       plus.onclick  = ()=>{ input.value = (parseInt(input.value)||1) + 1; };
-      wrap.querySelector('.addBtn').onclick = ()=> addToCart(p, parseInt(input.value)||1);
+
+      wrap.querySelector('.addBtn').onclick = ()=>{
+        const q = parseInt(input.value)||1;
+
+        // REGRA: só abre modal para Lanches
+        if((p.category||'').toLowerCase() === 'lanches'){
+          openCustomizer(p, q);
+        }else{
+          addToCart(p, q);
+          if(isMobile()) setCartOpen(true);
+        }
+      };
+
       return wrap;
     }
 
@@ -552,11 +858,11 @@
 
     // ========= CARRINHO =========
     function addToCart(product, qty=1){
+      // Para produtos normais, junta pelo id
       const f = state.cart.find(i=>i.id===product.id);
       if(f){ f.qty += qty; }
       else{ state.cart.push({id:product.id, name:product.name, price:product.price, qty}); }
       renderCart();
-      if(isMobile()) setCartOpen(true);
     }
 
     function removeFromCart(id){
@@ -694,7 +1000,12 @@
         address: c.address,
         payment: c.pay,
         note: c.obs,
-        items: state.cart.map(i => ({ name: i.name, qty: i.qty, price: i.price }))
+        items: state.cart.map(i => ({
+          name: i.name,
+          qty: i.qty,
+          price: i.price,
+          meta: i.meta || null
+        }))
       };
     }
 

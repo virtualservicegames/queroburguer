@@ -31,7 +31,6 @@
       display:flex;gap:12px;align-items:center
     }
 
-    /* LOGO imagem */
     .logoBox{
       width:44px;height:44px;border-radius:14px;
       background:rgba(255,255,255,.05);
@@ -46,7 +45,6 @@
     .brand h1{font-size:18px;margin:0;line-height:1.1}
     .brand p{margin:3px 0 0;color:var(--muted);font-size:12px}
 
-    /* Barra de categorias + busca (linha de baixo) */
     .catbar{ max-width:1100px; margin:0 auto; padding: 0 14px 12px; }
     .catrow{ display:flex; gap:10px; align-items:center; justify-content:space-between; }
 
@@ -70,7 +68,6 @@
       box-shadow: 0 10px 22px rgba(255,176,0,.18);
     }
 
-    /* Busca */
     .search{ position:relative; flex: 0 0 320px; max-width: 320px; }
     .search input{
       width:100%;
@@ -138,6 +135,7 @@
       .grid{ grid-template-columns:repeat(2, minmax(0,1fr)); }
     }
 
+    /* ✅ card agora é "clicável" (botão inteiro) */
     .card{
       background:rgba(22,23,26,.92);
       border:1px solid rgba(255,255,255,.07);
@@ -145,15 +143,28 @@
       box-shadow:var(--shadow);
       overflow:hidden;
       display:flex;flex-direction:column;
-      transition:transform .15s ease, border-color .15s ease;
+      transition:transform .15s ease, border-color .15s ease, box-shadow .15s ease;
+      cursor:pointer;
+      user-select:none;
+      -webkit-tap-highlight-color: transparent;
     }
-    .card:hover{ transform:translateY(-1px); border-color: rgba(255,176,0,.20); }
+    .card:hover{
+      transform:translateY(-1px);
+      border-color: rgba(255,176,0,.25);
+      box-shadow: 0 14px 34px rgba(0,0,0,.40);
+    }
+    .card:active{
+      transform:translateY(0px) scale(.99);
+    }
+    .card:focus-visible{
+      outline: 3px solid rgba(255,176,0,.35);
+      outline-offset: 2px;
+    }
 
     .thumb{ aspect-ratio:1/1; width:100%; object-fit:cover; background:#0c0c0d; }
     .pad{padding:10px}
     .title{font-weight:900;margin:0 0 4px;font-size:14px}
     .desc{color:var(--muted);font-size:12px;line-height:1.25;margin:0 0 8px;min-height:30px}
-
     .priceRow{display:flex;align-items:center;justify-content:space-between;gap:8px}
     .price{font-weight:900;font-size:14px}
 
@@ -163,26 +174,24 @@
       border-radius:999px;padding:2px 6px;
       background: rgba(0,0,0,.20);
     }
-    .qty button{ background:transparent;border:0;color:#fff; font-size:18px;width:26px;height:26px;cursor:pointer }
-    .qty input{ width:30px;text-align:center;border:0;background:transparent;color:#fff;font-size:13px }
-
-    .addBtn{
-      margin-top:8px;width:100%;
-      padding:10px;border-radius:12px;border:0;cursor:pointer;
-      background:var(--primary);color:var(--primary-contrast);
-      font-weight:900;
+    .qty button{
+      background:transparent;border:0;color:#fff;
+      font-size:18px;width:26px;height:26px;cursor:pointer
+    }
+    .qty input{
+      width:30px;text-align:center;border:0;background:transparent;color:#fff;font-size:13px
     }
 
-    /* ===================== CARRINHO DESKTOP (FIXO, NÃO FLUTUANTE) ===================== */
+    /* ❌ botão antigo removido visualmente */
+    .addBtn{ display:none !important; }
+
+    /* ===================== CARRINHO DESKTOP (FIXO) ===================== */
     .cart{
-      /* ✅ antes era sticky/flutuante. Agora fica fixo dentro do layout (coluna direita) */
       position:relative;
       top:auto;
       align-self:stretch;
-
       height:auto;
       max-height:none;
-
       background:rgba(20,21,26,.92);
       border:1px solid rgba(255,255,255,.08);
       border-radius:var(--radius);
@@ -201,7 +210,6 @@
       max-height:40vh;overflow:auto
     }
 
-    /* Caixa do item no carrinho mais visível */
     .line{
       background: rgba(255,176,0,.12);
       border: 1px solid rgba(255,176,0,.22);
@@ -256,7 +264,6 @@
       #toggleCartBtn{ display:none; }
     }
 
-    /* Botão flutuante (mobile) */
     .fabCart{
       position:fixed;right:16px;bottom:16px;
       width:58px;height:58px;border-radius:18px;
@@ -269,16 +276,8 @@
     .fabCart svg{ width:26px;height:26px; }
     @media (max-width: 960px){ .fabCart{ display:grid; } }
 
-    .fabCart.empty{
-      background: rgba(255,255,255,.88);
-      color:#111;
-      border-color: rgba(0,0,0,.10);
-    }
-    .fabCart.filled{
-      background: var(--primary);
-      color: var(--primary-contrast);
-      border-color: transparent;
-    }
+    .fabCart.empty{ background: rgba(255,255,255,.88); color:#111; border-color: rgba(0,0,0,.10); }
+    .fabCart.filled{ background: var(--primary); color: var(--primary-contrast); border-color: transparent; }
 
     .badge{
       position:absolute;top:-8px;right:-8px;
@@ -313,8 +312,8 @@
       box-shadow: var(--shadow);
       z-index:90;
 
-      display:none;               /* aberto via JS */
-      flex-direction:column;      /* header/body/footer */
+      display:none;
+      flex-direction:column;
       overflow:hidden;
     }
 
@@ -327,14 +326,13 @@
     .modalTitle{ font-weight:900; font-size:16px; }
     .modalSub{ color:var(--muted); font-size:12px; margin-top:2px; }
 
-    /* ✅ layout em 2 colunas (esquerda = lanche + descrição / direita = opções) */
     .modalBody{
       padding:0;
       overflow:hidden;
       flex:1 1 auto;
       display:grid;
       grid-template-columns: 290px 1fr;
-      min-height: 0; /* importante pra scroll */
+      min-height: 0;
     }
 
     .modalLeft{
@@ -369,7 +367,7 @@
 
     .modalRight{
       padding:12px 14px;
-      overflow:auto;              /* ✅ rola só o lado direito */
+      overflow:auto;
       min-height:0;
       -webkit-overflow-scrolling:touch;
     }
@@ -423,7 +421,6 @@
       .optionsGrid{ grid-template-columns: 1fr; }
     }
 
-    /* Fullscreen no mobile */
     @media (max-width: 960px){
       .modal{
         left:0; top:0;
@@ -433,9 +430,7 @@
         height:100vh;
         border-radius:0;
       }
-      .modalBody{
-        grid-template-columns: 1fr; /* ✅ empilha no mobile */
-      }
+      .modalBody{ grid-template-columns: 1fr; }
       .modalLeft{
         border-right:none;
         border-bottom:1px solid rgba(255,255,255,.08);
@@ -537,7 +532,6 @@
       <button class="chip" type="button" id="customCloseBtn">Fechar</button>
     </div>
 
-    <!-- ✅ agora em 2 colunas -->
     <div class="modalBody">
       <aside class="modalLeft">
         <img id="modalProductImg" class="modalLeftImg" src="" alt="Produto" />
@@ -583,26 +577,17 @@
 
     // ========= PRODUTOS =========
     const PRODUCTS = [
-      { id:'qbsmash', name:'Quero Smash', price:11.90, category:'Lanches', desc:'Carne de primeira bem gostosa 100% bovina smash crocante, queijo derretendo encima da carne, deliciosa cebola caramelizada na manteiga, molho da casa no pão brioche macio. Simplesmente, impossível de resistir!', image:'images/smash.jpg' },
+      { id:'xsmash', name:'Quero Smash 140g', price:11.90, category:'Lanches', desc:'Pão brioche, 140g smash, queijo prato e maionese da casa.', image:'images/smash.jpg' },
+      { id:'xbacon', name:'Quero Bacon', price:18.90, category:'Lanches', desc:'Carne 160g, bacon crocante, cheddar e molho especial.', image:'images/bacon.jpg' },
       { id:'combofamilia2', name:'Combo Família 2', price:70.90, category:'Combos', desc:'4 lanches + batata grande turbinada + refri 2l.', image:'images/combof2.jpeg' },
       { id:'combofamilia1', name:'Combo Família 1', price:59.90, category:'Combos', desc:'2 lanches + 2 batatas + 2 bebidas.', image:'images/combof1.jpeg' },
-      { id:'comboxtudo', name:'Combo X-Tudo', price:59.90, category:'Combos', desc:'X-Tudo + Batata Frita 140g + Bebida de sua escolha - O completo que você merece! Pão fresquinho, carne suculenta, ovo, queijo derretido, bacon crocante, presunto, alface e tomate fresquinho. Cada mordida é uma explosão de sabor!  - Ingredientes: pão, carne, ovo, queijo, presunto, alface, maionese temperada                                                         .                                                                          .                                                                            .                                                                             .                                                                             .                                                       hambúrguer artesanal, X tudo, smash burger, Xtudo, smash gourmet, lanche, cheeseburger, hambúrguer, cheddar burger, hamburguer, burger artesanal, cebola, aramelizada, lanche gourmet, lanche artesanal, burger suculento, combo burger, quero burguer', image:'images/combof1.jpeg' },
       { id:'batatam', name:'Batata Frita Média', price:18.90, category:'Acompanhamentos', desc:'Batata Crocante.', image:'images/batatam.jpeg' },
       { id:'batatag', name:'Batata Frita Grande', price:24.90, category:'Acompanhamentos', desc:'Batata Crocante.', image:'images/batatag.jpeg' },
       { id:'guaramor', name:'Guaramor 250ml', price:4.90, category:'Bebidas', desc:'Guaraná 250ml.', image:'images/guaramor.jpg' },
       { id:'batatamtb', name:'Batata Turbinada Média', price:23.90, category:'Acompanhamentos', desc:'Inventar algo depois.', image:'images/batatag1.jpeg' },
       { id:'batatagtb', name:'Batata Turbinada Grande', price:27.90, category:'Acompanhamentos', desc:'Inventar algo depois.', image:'images/batatag2.jpeg' },
-      { id:'xbacon', name:'Quero Bacon', price:18.90, category:'Lanches', desc:'Carne 160g, bacon crocante, cheddar e molho especial.', image:'images/bacon.jpg' }, 
-      { id:'qbpredileto', name:'Quero Burguer Predileto', price:18.90, category:'Lanches', desc:'Um burger artesanal de 120g super suculento, coberto com cheddar derretido e muita cebola caramelizada no ponto perfeito. Ganha crocância com o bacon e frescor com o tomate e os picles, criando um contraste delicioso. Finalizado com baconese no pão brioche macio. Um lanche completo, intenso e cheio de personalidade — impossível não virar o seu predileto', image:'images/bacon.jpg' },      
-      { id:'qbxtudo', name:'Quero X-Tudo', price:18.90, category:'Lanches', desc:'Aquele X-Tudo raiz que todo mundo ama! Pão macio, hambúrguer tradicional bem fritinho, queijo derretido, presunto saboroso e um ovo fritinho que deixa tudo ainda melhor. Completo com alface e cebola roxa crocante e nossa maionese temperada para dar o toque final. Um lanche generoso, clássico e cheio de sabor — do jeitinho que você ama' },
-      { id:'qbsmashduplo', name:'Quero Smash Duplo 200g', price:18.90, category:'Lanches', desc:'Dois discos de carne smash crocantes por fora e suculentos por dentro, cada um coberto com queijo derretido. Finalizado com bacon crocante, baconese, nosso molho da casa e servido no pão brioche macio. Um lanche intenso, cheio de sabor e com aquela combinação perfeita entre crocância e cremosidade.', image:'images/bacon.jpg' },
-      { id:'qbxsalada', name:'Quero X-Salada', price:18.90, category:'Lanches', desc:'Sabor e frescor em cada mordida! Pão macio, carne suculenta, tomate e alface fresquinhos cuidadosamente selecionados. O equilíbrio perfeito para quem ama Salada!', image:'images/bacon.jpg' },
-      { id:'qbkids', name:'Quero Hambúrguer Kids', price:18.90, category:'Lanches', desc:'Pequeno no tamanho, gigante no sabor! Pão macio, carne suculenta e queijo derretido, perfeito para a criançada aproveitar cada mordida.  Um lanche feito especialmente para as crianças: saboroso, delicado e sem exageros, do jeitinho que elas gostam', image:'images/bacon.jpg' },
-      { id:'qbespecial', name:'Quero Burguer Especial', price:27.90, category:'Lanches', desc:'Burger artesanal de 120g, suculento e bem temperado, coberto com queijo cheddar cremoso. Recebe o frescor do tomate, da alface crocante e da cebola roxa no ponto perfeito. Tudo finalizado com nossa maionese de bacon, que dá um toque defumado irresistível. Servido no pão brioche macio — simples, equilibrado e cheio de sabor.', image:'images/.jpeg' },
-      { id:'qbduplo', name:'Quero Hamburguer Duplo', price:11.90, category:'Lanches', desc:'Duplo sabor, dupla intensidade! Pão macio, duas camadas suculentas de carne, queijo derretido e bacon crocante. Uma combinação perfeita do bacon e camadas queijos derretidos nas carnes', image:'images/smash.jpg' },
     ];
 
-    // ========= ITENS DO MODAL =========
     const DRINK_OPTIONS = [
       { id:'coca_lata', name:'Coca-Cola Lata 350ml', price: 6.00 },
       { id:'guarana_lata', name:'Guaraná Lata 350ml', price: 5.50 },
@@ -663,7 +648,6 @@
     const customCloseBtn  = document.getElementById('customCloseBtn');
     const customConfirmBtn= document.getElementById('customConfirmBtn');
 
-    // ✅ elementos do painel esquerdo (lanche + descrição)
     const modalProductImg  = document.getElementById('modalProductImg');
     const modalProductName = document.getElementById('modalProductName');
     const modalProductDesc = document.getElementById('modalProductDesc');
@@ -684,7 +668,6 @@
         itemNote.value = '';
         drinkBox.innerHTML = '';
         addonBox.innerHTML = '';
-
         modalProductImg.src = '';
         modalProductName.textContent = '—';
         modalProductDesc.textContent = '—';
@@ -754,7 +737,6 @@
       customTitle.textContent = product.name;
       customSub.textContent = `Base: ${formatBRL(product.price)} • qtd ${customUI.qty}`;
 
-      // ✅ preenche painel esquerdo com lanche + descrição
       modalProductImg.src = product.image || '';
       modalProductImg.alt = product.name || 'Produto';
       modalProductName.textContent = product.name || '';
@@ -821,9 +803,12 @@
 
     // ========= PRODUTOS =========
     function productCard(p){
-      const wrap = document.createElement('article');
-      wrap.className = 'card';
-      wrap.innerHTML = `
+      // ✅ card inteiro clicável (sem botão Adicionar)
+      const card = document.createElement('article');
+      card.className = 'card';
+      card.tabIndex = 0; // teclado
+
+      card.innerHTML = `
         <img class="thumb" src="${p.image}" alt="${p.name}">
         <div class="pad">
           <h4 class="title">${p.name}</h4>
@@ -831,30 +816,46 @@
           <div class="priceRow">
             <span class="price">${formatBRL(p.price)}</span>
             <div class="qty">
-              <button type="button">−</button>
-              <input type="number" min="1" value="1"/>
-              <button type="button">+</button>
+              <button type="button" aria-label="Diminuir">−</button>
+              <input type="number" min="1" value="1" aria-label="Quantidade"/>
+              <button type="button" aria-label="Aumentar">+</button>
             </div>
           </div>
           <button class="addBtn" type="button">Adicionar</button>
         </div>
       `;
-      const [minus, input, plus] = wrap.querySelectorAll('.qty>*');
-      minus.onclick = ()=>{ input.value = Math.max(1, (parseInt(input.value)||1) - 1); };
-      plus.onclick  = ()=>{ input.value = (parseInt(input.value)||1) + 1; };
 
-      wrap.querySelector('.addBtn').onclick = ()=>{
+      const [minus, input, plus] = card.querySelectorAll('.qty>*');
+
+      // ✅ impede clique no card quando apertar +/−/input
+      const stop = (e)=> e.stopPropagation();
+      minus.addEventListener('click', (e)=>{ stop(e); input.value = Math.max(1, (parseInt(input.value)||1) - 1); });
+      plus.addEventListener('click',  (e)=>{ stop(e); input.value = (parseInt(input.value)||1) + 1; });
+      input.addEventListener('click', stop);
+      input.addEventListener('keydown', (e)=>{ e.stopPropagation(); });
+
+      function doAdd(){
         const q = parseInt(input.value)||1;
-
         if((p.category||'').toLowerCase() === 'lanches'){
           openCustomizer(p, q);
         }else{
           addToCart(p, q);
           if(isMobile()) setCartOpen(true);
         }
-      };
+      }
 
-      return wrap;
+      // clique no card inteiro
+      card.addEventListener('click', doAdd);
+
+      // acessibilidade: Enter/Espaço no card
+      card.addEventListener('keydown', (e)=>{
+        if(e.key === 'Enter' || e.key === ' '){
+          e.preventDefault();
+          doAdd();
+        }
+      });
+
+      return card;
     }
 
     function matchesSearch(p){
@@ -997,7 +998,6 @@
       if(isMobile()){
         setCartOpen(false);
       }else{
-        // ✅ no desktop, carrinho fica sempre “normal” na coluna (não precisa abrir/fechar)
         cartBox.classList.remove('open');
         overlay.classList.remove('show');
       }
@@ -1088,6 +1088,7 @@
     sendBtn.addEventListener('click', send);
     clearBtn.addEventListener('click', clearCart);
 
+    // Busca
     searchInput.addEventListener('input', () => {
       state.q = searchInput.value;
       renderProducts();

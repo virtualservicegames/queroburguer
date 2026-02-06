@@ -40,38 +40,19 @@
       box-shadow:var(--shadow);
       flex: 0 0 auto;
     }
-    .logoBox img{
-      width:100%;height:100%;object-fit:cover;display:block;
-    }
+    .logoBox img{ width:100%;height:100%;object-fit:cover;display:block; }
 
     .brand{min-width:0}
     .brand h1{font-size:18px;margin:0;line-height:1.1}
     .brand p{margin:3px 0 0;color:var(--muted);font-size:12px}
 
     /* Barra de categorias + busca (linha de baixo) */
-    .catbar{
-      max-width:1100px;
-      margin:0 auto;
-      padding: 0 14px 12px;
-    }
-    .catrow{
-      display:flex;
-      gap:10px;
-      align-items:center;
-      justify-content:space-between;
-    }
+    .catbar{ max-width:1100px; margin:0 auto; padding: 0 14px 12px; }
+    .catrow{ display:flex; gap:10px; align-items:center; justify-content:space-between; }
 
-    /* No PC: sem caixa atrás (clean) */
     .nav{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      justify-content:flex-start;
-      background: transparent;
-      border: none;
-      padding: 0;
-      box-shadow: none;
-      margin:0;
+      display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-start;
+      background: transparent; border: none; padding: 0; box-shadow: none; margin:0;
     }
 
     .chip{
@@ -90,11 +71,7 @@
     }
 
     /* Busca */
-    .search{
-      position:relative;
-      flex: 0 0 320px;
-      max-width: 320px;
-    }
+    .search{ position:relative; flex: 0 0 320px; max-width: 320px; }
     .search input{
       width:100%;
       padding:10px 12px 10px 38px;
@@ -113,24 +90,15 @@
       opacity:.7;
     }
 
-    /* No mobile: deixa a área “flutuante/opaca” e empilha */
     @media (max-width: 960px){
-      .catrow{
-        flex-direction:column;
-        align-items:stretch;
-      }
-      .search{
-        flex: 1 1 auto;
-        max-width:none;
-      }
+      .catrow{ flex-direction:column; align-items:stretch; }
+      .search{ flex: 1 1 auto; max-width:none; }
       .nav{
         background: rgba(20,21,26,.55);
         border: 1px solid rgba(255,255,255,.07);
         border-radius: 16px;
         padding: 10px;
         box-shadow: 0 8px 22px rgba(0,0,0,.30);
-
-        /* rolagem horizontal se ficar grande */
         flex-wrap:nowrap;
         overflow-x:auto;
         overflow-y:hidden;
@@ -146,7 +114,6 @@
     }
     @media (max-width: 960px){ .wrap{grid-template-columns:1fr} }
 
-    /* Lista de seções por categoria */
     .sectionTitle{
       margin: 18px 0 10px;
       font-size: 16px;
@@ -180,18 +147,9 @@
       display:flex;flex-direction:column;
       transition:transform .15s ease, border-color .15s ease;
     }
-    .card:hover{
-      transform:translateY(-1px);
-      border-color: rgba(255,176,0,.20);
-    }
+    .card:hover{ transform:translateY(-1px); border-color: rgba(255,176,0,.20); }
 
-    .thumb{
-      aspect-ratio:1/1;
-      width:100%;
-      object-fit:cover;
-      background:#0c0c0d;
-    }
-
+    .thumb{ aspect-ratio:1/1; width:100%; object-fit:cover; background:#0c0c0d; }
     .pad{padding:10px}
     .title{font-weight:900;margin:0 0 4px;font-size:14px}
     .desc{color:var(--muted);font-size:12px;line-height:1.25;margin:0 0 8px;min-height:30px}
@@ -205,13 +163,8 @@
       border-radius:999px;padding:2px 6px;
       background: rgba(0,0,0,.20);
     }
-    .qty button{
-      background:transparent;border:0;color:#fff;
-      font-size:18px;width:26px;height:26px;cursor:pointer
-    }
-    .qty input{
-      width:30px;text-align:center;border:0;background:transparent;color:#fff;font-size:13px
-    }
+    .qty button{ background:transparent;border:0;color:#fff; font-size:18px;width:26px;height:26px;cursor:pointer }
+    .qty input{ width:30px;text-align:center;border:0;background:transparent;color:#fff;font-size:13px }
 
     .addBtn{
       margin-top:8px;width:100%;
@@ -220,17 +173,23 @@
       font-weight:900;
     }
 
-    /* Carrinho (desktop) */
+    /* ===================== CARRINHO DESKTOP (FIXO, NÃO FLUTUANTE) ===================== */
     .cart{
-      position:sticky;
-      top: calc(var(--headerH, 130px) + 12px); /* header + espacinho */
-      align-self:start;
+      /* ✅ antes era sticky/flutuante. Agora fica fixo dentro do layout (coluna direita) */
+      position:relative;
+      top:auto;
+      align-self:stretch;
+
+      height:auto;
+      max-height:none;
+
       background:rgba(20,21,26,.92);
       border:1px solid rgba(255,255,255,.08);
       border-radius:var(--radius);
       box-shadow:var(--shadow);
       overflow:hidden;
     }
+
     .cartHeader{
       padding:14px 14px 0;
       display:flex;align-items:center;justify-content:space-between;gap:10px
@@ -242,13 +201,13 @@
       max-height:40vh;overflow:auto
     }
 
-    /* ✅ ALTERAÇÃO 2: caixa do item no carrinho mais visível (amarelo do layout) */
+    /* Caixa do item no carrinho mais visível */
     .line{
       background: rgba(255,176,0,.12);
       border: 1px solid rgba(255,176,0,.22);
       border-radius:12px;
       padding:10px;
-      display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:center;
+      display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:center
     }
     .line .name{font-weight:900;font-size:13px}
     .line .unit{color:rgba(255,255,255,.78);font-size:12px}
@@ -277,7 +236,7 @@
     .btn.clear{background:var(--danger);color:#1e0f10}
     .btn:disabled{opacity:.55;cursor:not-allowed}
 
-    /* Mobile: carrinho escondido quando fechado */
+    /* ===================== MOBILE: carrinho como bottom-sheet ===================== */
     @media (max-width: 960px){
       main.wrap{ padding-bottom: 120px; }
       .cart{
@@ -342,12 +301,11 @@
       display:none;
     }
 
-    /* ✅ ALTERAÇÃO 1: modal em layout flex + corpo rolável + footer sempre visível */
     .modal{
       position:fixed;
       left:50%; top:50%;
       transform:translate(-50%,-50%);
-      width:min(740px, calc(100vw - 28px));
+      width:min(920px, calc(100vw - 28px));
       max-height:calc(100vh - 28px);
       background:rgba(20,21,26,.96);
       border:1px solid rgba(255,255,255,.10);
@@ -357,23 +315,63 @@
 
       display:none;               /* aberto via JS */
       flex-direction:column;      /* header/body/footer */
-      overflow:hidden;            /* sem "vazar" */
+      overflow:hidden;
     }
 
     .modalHeader{
       padding:14px 14px 10px;
       display:flex; align-items:center; justify-content:space-between; gap:10px;
       border-bottom:1px solid rgba(255,255,255,.08);
-      flex: 0 0 auto;
+      flex:0 0 auto;
     }
     .modalTitle{ font-weight:900; font-size:16px; }
     .modalSub{ color:var(--muted); font-size:12px; margin-top:2px; }
 
+    /* ✅ layout em 2 colunas (esquerda = lanche + descrição / direita = opções) */
     .modalBody{
+      padding:0;
+      overflow:hidden;
+      flex:1 1 auto;
+      display:grid;
+      grid-template-columns: 290px 1fr;
+      min-height: 0; /* importante pra scroll */
+    }
+
+    .modalLeft{
       padding:12px 14px;
+      border-right:1px solid rgba(255,255,255,.08);
+      background:rgba(0,0,0,.12);
       overflow:auto;
-      flex: 1 1 auto;  /* ✅ ocupa o espaço e rola */
-      -webkit-overflow-scrolling: touch;
+      min-height:0;
+      -webkit-overflow-scrolling:touch;
+    }
+    .modalLeftImg{
+      width:100%;
+      aspect-ratio:1/1;
+      border-radius:14px;
+      object-fit:cover;
+      background:#0c0c0d;
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow: 0 10px 22px rgba(0,0,0,.25);
+    }
+    .modalLeftName{
+      margin:10px 0 4px;
+      font-weight:900;
+      font-size:15px;
+      line-height:1.15;
+    }
+    .modalLeftDesc{
+      margin:0;
+      color:rgba(255,255,255,.72);
+      font-size:12.5px;
+      line-height:1.35;
+    }
+
+    .modalRight{
+      padding:12px 14px;
+      overflow:auto;              /* ✅ rola só o lado direito */
+      min-height:0;
+      -webkit-overflow-scrolling:touch;
     }
 
     .modalSection{ margin-bottom:14px; }
@@ -412,15 +410,12 @@
       padding:12px 14px;
       border-top:1px solid rgba(255,255,255,.08);
       display:flex; align-items:center; justify-content:space-between; gap:12px;
-      flex: 0 0 auto;
-
-      /* ✅ garante que o botão nunca “some” quando rola */
+      flex:0 0 auto;
       position: sticky;
       bottom: 0;
       background: rgba(20,21,26,.96);
       backdrop-filter: blur(6px);
     }
-
     .modalTotal{ display:grid; gap:2px; }
     .modalPrice{ font-weight:900; font-size:16px; }
 
@@ -428,7 +423,7 @@
       .optionsGrid{ grid-template-columns: 1fr; }
     }
 
-    /* ✅ Fullscreen no mobile (se precisar, fica “tamanho do site inteiro”) */
+    /* Fullscreen no mobile */
     @media (max-width: 960px){
       .modal{
         left:0; top:0;
@@ -438,9 +433,18 @@
         height:100vh;
         border-radius:0;
       }
-      .modalHeader{ padding:14px; }
-      .modalBody{ padding:12px 14px 16px; }
-      .modalFooter{ padding:12px 14px; }
+      .modalBody{
+        grid-template-columns: 1fr; /* ✅ empilha no mobile */
+      }
+      .modalLeft{
+        border-right:none;
+        border-bottom:1px solid rgba(255,255,255,.08);
+        display:grid;
+        grid-template-columns: 120px 1fr;
+        gap:12px;
+        align-items:start;
+      }
+      .modalLeftImg{ aspect-ratio:1/1; }
     }
   </style>
 </head>
@@ -449,7 +453,6 @@
   <header>
     <div class="topbar">
       <div class="logoBox">
-        <!-- SUA LOGO AQUI: coloque o arquivo em images/logo.png -->
         <img src="images/logo.jpeg" alt="Quero Burguer"
              onerror="this.style.display='none'; this.parentElement.innerHTML='<b style=&quot;color:#ffb000&quot;>QB</b>';"/>
       </div>
@@ -478,7 +481,6 @@
   <div class="overlay" id="overlay"></div>
 
   <main class="wrap">
-    <!-- Agora o conteúdo vai ser renderizado como SEÇÕES -->
     <section id="productGrid"></section>
 
     <aside class="cart" id="cartBox">
@@ -535,23 +537,34 @@
       <button class="chip" type="button" id="customCloseBtn">Fechar</button>
     </div>
 
+    <!-- ✅ agora em 2 colunas -->
     <div class="modalBody">
-      <div class="modalSection">
-        <div class="modalLabel">Bebida</div>
-        <div class="modalHint">Escolha 1 (opcional)</div>
-        <div class="optionsGrid" id="drinkOptions"></div>
-      </div>
+      <aside class="modalLeft">
+        <img id="modalProductImg" class="modalLeftImg" src="" alt="Produto" />
+        <div>
+          <div id="modalProductName" class="modalLeftName">—</div>
+          <p id="modalProductDesc" class="modalLeftDesc">—</p>
+        </div>
+      </aside>
 
-      <div class="modalSection">
-        <div class="modalLabel">Adicionais</div>
-        <div class="modalHint">Pode marcar vários</div>
-        <div class="optionsGrid" id="addonOptions"></div>
-      </div>
+      <section class="modalRight">
+        <div class="modalSection">
+          <div class="modalLabel">Bebida</div>
+          <div class="modalHint">Escolha 1 (opcional)</div>
+          <div class="optionsGrid" id="drinkOptions"></div>
+        </div>
 
-      <div class="modalSection">
-        <div class="modalLabel">Obs. deste lanche</div>
-        <input class="modalInput" id="itemNote" placeholder="Ex.: sem cebola, ponto da carne..." />
-      </div>
+        <div class="modalSection">
+          <div class="modalLabel">Adicionais</div>
+          <div class="modalHint">Pode marcar vários</div>
+          <div class="optionsGrid" id="addonOptions"></div>
+        </div>
+
+        <div class="modalSection">
+          <div class="modalLabel">Obs. deste lanche</div>
+          <input class="modalInput" id="itemNote" placeholder="Ex.: sem cebola, ponto da carne..." />
+        </div>
+      </section>
     </div>
 
     <div class="modalFooter">
@@ -581,7 +594,7 @@
       { id:'batatagtb', name:'Batata Turbinada Grande', price:27.90, category:'Acompanhamentos', desc:'Inventar algo depois.', image:'images/batatag2.jpeg' },
     ];
 
-    // ========= ITENS DO MODAL (não aparecem nos produtos gerais) =========
+    // ========= ITENS DO MODAL =========
     const DRINK_OPTIONS = [
       { id:'coca_lata', name:'Coca-Cola Lata 350ml', price: 6.00 },
       { id:'guarana_lata', name:'Guaraná Lata 350ml', price: 5.50 },
@@ -598,11 +611,7 @@
     ];
 
     // ========= ESTADO =========
-    const state = {
-      category: 'Todos',
-      cart: [],
-      q: '' // texto de busca
-    };
+    const state = { category: 'Todos', cart: [], q: '' };
 
     const formatBRL = (n) => n.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
     const unique = (arr) => [...new Set(arr)];
@@ -634,7 +643,7 @@
       });
     }
 
-    // ========= MODAL (BEBIDA + ADICIONAIS) =========
+    // ========= MODAL =========
     const customOverlay = document.getElementById('customOverlay');
     const customModal   = document.getElementById('customModal');
     const customTitle   = document.getElementById('customTitle');
@@ -646,18 +655,16 @@
     const customCloseBtn  = document.getElementById('customCloseBtn');
     const customConfirmBtn= document.getElementById('customConfirmBtn');
 
-    const customUI = {
-      open: false,
-      product: null,
-      qty: 1,
-      drinkId: null,
-      addonIds: new Set(),
-    };
+    // ✅ elementos do painel esquerdo (lanche + descrição)
+    const modalProductImg  = document.getElementById('modalProductImg');
+    const modalProductName = document.getElementById('modalProductName');
+    const modalProductDesc = document.getElementById('modalProductDesc');
+
+    const customUI = { open:false, product:null, qty:1, drinkId:null, addonIds:new Set() };
 
     function setCustomOpen(open){
       customUI.open = open;
       customOverlay.style.display = open ? 'block' : 'none';
-      // ✅ agora o modal usa flex (pra footer não sumir)
       customModal.style.display   = open ? 'flex' : 'none';
       customModal.setAttribute('aria-hidden', open ? 'false' : 'true');
 
@@ -669,6 +676,10 @@
         itemNote.value = '';
         drinkBox.innerHTML = '';
         addonBox.innerHTML = '';
+
+        modalProductImg.src = '';
+        modalProductName.textContent = '—';
+        modalProductDesc.textContent = '—';
       }
     }
 
@@ -676,7 +687,6 @@
       let total = 0;
       const drink = DRINK_OPTIONS.find(d => d.id === customUI.drinkId);
       if(drink) total += drink.price;
-
       for(const id of customUI.addonIds){
         const a = ADDON_OPTIONS.find(x => x.id === id);
         if(a) total += a.price;
@@ -736,6 +746,12 @@
       customTitle.textContent = product.name;
       customSub.textContent = `Base: ${formatBRL(product.price)} • qtd ${customUI.qty}`;
 
+      // ✅ preenche painel esquerdo com lanche + descrição
+      modalProductImg.src = product.image || '';
+      modalProductImg.alt = product.name || 'Produto';
+      modalProductName.textContent = product.name || '';
+      modalProductDesc.textContent = product.desc || '';
+
       renderOptionCards(drinkBox, DRINK_OPTIONS, 'drink');
       renderOptionCards(addonBox, ADDON_OPTIONS, 'addon');
       updateCustomPrice();
@@ -747,9 +763,7 @@
     customOverlay.onclick  = ()=> setCustomOpen(false);
 
     document.addEventListener('keydown', (e)=>{
-      if(e.key === 'Escape' && customUI.open){
-        setCustomOpen(false);
-      }
+      if(e.key === 'Escape' && customUI.open) setCustomOpen(false);
     });
 
     customConfirmBtn.onclick = ()=>{
@@ -844,9 +858,7 @@
 
     function getFilteredProducts(){
       let list = PRODUCTS;
-      if(state.category !== 'Todos'){
-        list = list.filter(p => p.category === state.category);
-      }
+      if(state.category !== 'Todos') list = list.filter(p => p.category === state.category);
       list = list.filter(matchesSearch);
       return list;
     }
@@ -856,7 +868,6 @@
       container.innerHTML = '';
 
       const filtered = getFilteredProducts();
-
       const categoriesToShow = (state.category === 'Todos')
         ? unique(PRODUCTS.map(p=>p.category))
         : [state.category];
@@ -931,9 +942,7 @@
       return line;
     }
 
-    function calcTotal(){
-      return state.cart.reduce((s,i)=>s+i.price*i.qty,0);
-    }
+    function calcTotal(){ return state.cart.reduce((s,i)=>s+i.price*i.qty,0); }
 
     function updateBadge(){
       const qty = state.cart.reduce((s,i)=>s+i.qty,0);
@@ -980,7 +989,8 @@
       if(isMobile()){
         setCartOpen(false);
       }else{
-        setCartOpen(true);
+        // ✅ no desktop, carrinho fica sempre “normal” na coluna (não precisa abrir/fechar)
+        cartBox.classList.remove('open');
         overlay.classList.remove('show');
       }
     }
@@ -1006,9 +1016,7 @@
       const lines = [];
       lines.push('🧾 *Pedido – Quero Burguer*');
       lines.push('');
-
       state.cart.forEach(i => lines.push(`• ${i.qty}x ${i.name} — ${formatBRL(i.price*i.qty)}`));
-
       lines.push('');
       lines.push(`Total: *${formatBRL(calcTotal())}*`);
 
@@ -1042,15 +1050,9 @@
     }
 
     function send(){
-      if(state.cart.length === 0){
-        alert('Adicione pelo menos 1 item no carrinho.');
-        return;
-      }
+      if(state.cart.length === 0){ alert('Adicione pelo menos 1 item no carrinho.'); return; }
       const phone = normalizeDigits(WHATSAPP_PHONE);
-      if(!phone || phone.length < 10){
-        alert('Número do WhatsApp inválido.');
-        return;
-      }
+      if(!phone || phone.length < 10){ alert('Número do WhatsApp inválido.'); return; }
 
       try{
         fetch(`${SERVER_URL}/order`, {
@@ -1061,11 +1063,8 @@
       }catch(e){}
 
       const url = `https://wa.me/${phone}?text=${buildWhatsAppText()}`;
-      if(isMobile()){
-        window.location.href = url;
-      }else{
-        window.open(url, '_blank');
-      }
+      if(isMobile()) window.location.href = url;
+      else window.open(url, '_blank');
 
       state.cart = [];
       renderCart();

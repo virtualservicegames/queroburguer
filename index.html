@@ -339,32 +339,42 @@
       display:none;
     }
     .modal{
-      position:fixed;
-      left:50%; top:50%;
-      transform:translate(-50%,-50%);
-      width:min(860px, calc(100vw - 28px));
-      max-height:min(86vh, 860px);
-      background:rgba(20,21,26,.96);
-      border:1px solid rgba(255,255,255,.10);
-      border-radius:18px;
-      box-shadow: var(--shadow);
-      z-index:90;
-      display:none;
-      overflow:hidden;
-    }
-    .modalHeader{
-      padding:14px 14px 10px;
-      display:flex; align-items:center; justify-content:space-between; gap:10px;
-      border-bottom:1px solid rgba(255,255,255,.08);
-    }
-    .modalTitle{ font-weight:900; font-size:16px; }
-    .modalSub{ color:var(--muted); font-size:12px; margin-top:2px; }
+  position:fixed;
+  left:50%; top:50%;
+  transform:translate(-50%,-50%);
+  width:min(860px, calc(100vw - 28px));
+  height:min(86vh, 860px);              /* <<< era max-height */
+  background:rgba(20,21,26,.96);
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:18px;
+  box-shadow: var(--shadow);
+  z-index:90;
+  display:none;
+  overflow:hidden;
 
-    /* NOVO: layout 2 colunas (imagem+desc à esquerda) */
-    .modalBody{
-      padding:12px 14px;
-      overflow:auto;
-    }
+  display:flex;                          /* <<< NOVO */
+  flex-direction:column;                 /* <<< NOVO */
+}
+
+.modalHeader{
+  flex: 0 0 auto;                        /* <<< NOVO */
+}
+
+.modalBody{
+  padding:12px 14px;
+  overflow:auto;
+  flex: 1 1 auto;                        /* <<< NOVO: só o corpo rola */
+  -webkit-overflow-scrolling: touch;     /* <<< ajuda no celular */
+}
+
+.modalFooter{
+  flex: 0 0 auto;                        /* <<< NOVO: footer sempre visível */
+  padding:12px 14px;
+  border-top:1px solid rgba(255,255,255,.08);
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+  background: rgba(20,21,26,.96);        /* <<< garante que não “some” visualmente */
+}
+
     .modalLayout{
       display:grid;
       grid-template-columns: 280px 1fr;
